@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,6 +59,18 @@ fun ItemsPreview() {
     val items = listOf(
         Record("1", "Item 1", category, Date()),
         Record("2", "Item 2", category, Date()),
+        Record("1", "Item 1", category, Date()),
+        Record("2", "Item 2", category, Date()),
+        Record("1", "Item 1", category, Date()),
+        Record("2", "Item 2", category, Date()),
+        Record("1", "Item 1", category, Date()),
+        Record("2", "Item 2", category, Date()),
+        Record("1", "Item 1", category, Date()),
+        Record("2", "Item 2", category, Date()),
+        Record("1", "Item 1", category, Date()),
+        Record("2", "Item 2", category, Date()),
+        Record("1", "Item 1", category, Date()),
+        Record("2", "Item 2", category, Date()),
         Record("3", "Item 3", category, Date())
     )
     Column(
@@ -84,6 +97,7 @@ fun BalanceHeader(balance: Number, modifier: Modifier) {
             text = balance.toString(),
             color = Purple40,
             fontSize = 50.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .padding(start = 30.dp)
                 .padding(bottom = 40.dp)
@@ -91,12 +105,13 @@ fun BalanceHeader(balance: Number, modifier: Modifier) {
     }
 }
 
-
 @Composable
 fun ItemsList(items: List<Record>, modifier: Modifier) {
-    Column(modifier = modifier) {
+    LazyColumn(modifier = modifier) {
         items.forEach { item ->
-            ItemRow(item = item, modifier = modifier)
+            item {
+                ItemRow(item = item, modifier = modifier)
+            }
         }
     }
 }
