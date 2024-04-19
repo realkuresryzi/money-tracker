@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -57,82 +60,94 @@ fun ItemsPreview() {
         Record("2", "Item 2", category, Date()),
         Record("3", "Item 3", category, Date())
     )
-    Column {
-        BalanceHeader(balance = 18000)
-        ItemsList(items)
-        BottomBar(onItemClick = {})
-
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        BalanceHeader(balance = 18000, modifier = Modifier.fillMaxWidth())
+        ItemsList(items, modifier = Modifier.weight(1f))
+        BottomBar(onItemClick = {}, modifier = Modifier.fillMaxWidth())
     }
 }
 
 @Composable
-fun BalanceHeader(balance: Number) {
-    Text(
-        text = "Balance",
-        color = Color.Black,
-        fontSize = 25.sp,
-        modifier = Modifier
-            .padding(5.dp)
-    )
-    Text(
-        text = balance.toString(),
-        color = Purple40,
-        fontSize = 50.sp,
-        modifier = Modifier
-            .padding(5.dp)
-    )
+fun BalanceHeader(balance: Number, modifier: Modifier) {
+    Column(modifier = modifier) { // Apply the modifier to the Column
+        Text(
+            text = "Balance",
+            color = Color.Black,
+            fontSize = 25.sp,
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .padding(start = 30.dp)
+        )
+        Text(
+            text = balance.toString(),
+            color = Purple40,
+            fontSize = 50.sp,
+            modifier = Modifier
+                .padding(start = 30.dp)
+                .padding(bottom = 40.dp)
+        )
+    }
 }
 
+
 @Composable
-fun ItemsList(items: List<Record>) {
-    Column {
+fun ItemsList(items: List<Record>, modifier: Modifier) {
+    Column(modifier = modifier) {
         items.forEach { item ->
-            ItemRow(item = item)
+            ItemRow(item = item, modifier = modifier)
         }
     }
 }
 
 @Composable
-fun ItemRow(item: Record) {
+fun ItemRow(item: Record, modifier: Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .padding(vertical = 15.dp, horizontal = 40.dp)
     ) {
         Icon(
             painter = painterResource(id = R.drawable.cart),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.padding(end = 20.dp)
         )
         Text(
             text = item.title,
             modifier = Modifier.padding(start = 8.dp)
         )
     }
+
 }
 
 @Composable
 fun BottomBar(
-    onItemClick: (BottomBarItem) -> Unit
+    onItemClick: (BottomBarItem) -> Unit,
+    modifier: Modifier,
+    color: Color = Color(220, 220, 240)
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        BottomBarItem(
-            item = BottomBarItem.Items,
-            onItemClick = onItemClick
-        )
-        BottomBarItem(
-            item = BottomBarItem.Add,
-            onItemClick = onItemClick
-        )
-        BottomBarItem(
-            item = BottomBarItem.Statistics,
-            onItemClick = onItemClick
-        )
+    Column(modifier = modifier.background(color = color)) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            BottomBarItem(
+                item = BottomBarItem.Items,
+                onItemClick = onItemClick
+            )
+            BottomBarItem(
+                item = BottomBarItem.Add,
+                onItemClick = onItemClick
+            )
+            BottomBarItem(
+                item = BottomBarItem.Statistics,
+                onItemClick = onItemClick
+            )
+        }
     }
 }
 
