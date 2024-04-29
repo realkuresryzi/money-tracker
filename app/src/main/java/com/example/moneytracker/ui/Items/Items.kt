@@ -12,7 +12,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,15 +26,17 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.moneytracker.R
+import com.example.moneytracker.Screen
 import com.example.moneytracker.data.Category
 import com.example.moneytracker.data.Record
 import com.example.moneytracker.ui.theme.MoneyTrackerTheme
 import com.example.moneytracker.ui.theme.Purple40
 import java.util.Date
+import com.example.moneytracker.ui.BottomBar.BottomBar
 
 class ItemsFragment : Fragment() {
     override fun onCreateView(
@@ -43,7 +48,7 @@ class ItemsFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.Default)
             setContent {
                 MoneyTrackerTheme {
-                    ItemsPreview()
+                    //ItemsPreview()
                 }
 
             }
@@ -52,9 +57,8 @@ class ItemsFragment : Fragment() {
 
 }
 
-@Preview(showBackground = true)
 @Composable
-fun ItemsPreview() {
+fun ItemsPreview(navController: NavController) {
     val category = Category("1", "sports", Color.Black, "", true)
     val items = listOf(
         Record("1", "Item 1", category, Date()),
@@ -78,13 +82,16 @@ fun ItemsPreview() {
     ) {
         BalanceHeader(balance = 18000, modifier = Modifier.fillMaxWidth())
         ItemsList(items, modifier = Modifier.weight(1f))
-        BottomBar(onItemClick = {}, modifier = Modifier.fillMaxWidth())
+        BottomBar(
+            navController = navController,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
 @Composable
 fun BalanceHeader(balance: Number, modifier: Modifier) {
-    Column(modifier = modifier) { // Apply the modifier to the Column
+    Column(modifier = modifier) {
         Text(
             text = "Balance",
             color = Color.Black,
@@ -110,14 +117,14 @@ fun ItemsList(items: List<Record>, modifier: Modifier) {
     LazyColumn(modifier = modifier) {
         items.forEach { item ->
             item {
-                ItemRow(item = item, modifier = modifier)
+                ItemRow(item = item)
             }
         }
     }
 }
 
 @Composable
-fun ItemRow(item: Record, modifier: Modifier) {
+fun ItemRow(item: Record) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -135,60 +142,4 @@ fun ItemRow(item: Record, modifier: Modifier) {
         )
     }
 
-}
-
-@Composable
-fun BottomBar(
-    onItemClick: (BottomBarItem) -> Unit,
-    modifier: Modifier,
-    color: Color = Color(220, 220, 240)
-) {
-    Column(modifier = modifier.background(color = color)) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            BottomBarItem(
-                item = BottomBarItem.Items,
-                onItemClick = onItemClick
-            )
-            BottomBarItem(
-                item = BottomBarItem.Add,
-                onItemClick = onItemClick
-            )
-            BottomBarItem(
-                item = BottomBarItem.Statistics,
-                onItemClick = onItemClick
-            )
-        }
-    }
-}
-
-@Composable
-fun BottomBarItem(
-    item: BottomBarItem,
-    onItemClick: (BottomBarItem) -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            painter = painterResource(id = item.icon),
-            contentDescription = item.label
-        )
-        Text(
-            text = item.label
-        )
-    }
-}
-
-sealed class BottomBarItem(
-    val icon: Int,
-    val label: String
-) {
-    object Items : BottomBarItem(R.drawable.invoice_list, "Items")
-    object Add : BottomBarItem(R.drawable.plus, "Add")
-    object Statistics : BottomBarItem(R.drawable.chart_box, "Statistics")
 }

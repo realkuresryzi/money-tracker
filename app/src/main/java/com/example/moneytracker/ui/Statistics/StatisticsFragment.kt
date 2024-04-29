@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
@@ -28,14 +29,16 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.navigation.NavController
 import com.example.moneytracker.Greeting
+import com.example.moneytracker.Screen
 import com.example.moneytracker.ui.theme.MoneyTrackerTheme
 import com.example.moneytracker.ui.theme.Purple40
 import com.jaikeerthick.composable_graphs.composables.bar.BarGraph
 import com.jaikeerthick.composable_graphs.composables.bar.model.BarData
 import com.jaikeerthick.composable_graphs.composables.pie.PieChart
 import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
-
+import com.example.moneytracker.ui.BottomBar.BottomBar
 
 
 class StatisticsFragment : Fragment() {
@@ -48,7 +51,7 @@ class StatisticsFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.Default)
             setContent {
                 MoneyTrackerTheme {
-                    StatisticsPreview()
+                    //StatisticsPreview()
                 }
 
             }
@@ -56,14 +59,16 @@ class StatisticsFragment : Fragment() {
     }
 
 }
-@Preview
 @Composable
-fun StatisticsPreview() {
+fun StatisticsPreview(navController: NavController) {
     Column {
         MonthHeadline(monthName = "August")
         StatisticsBarGraph()
         StatisticsPieChart()
-
+        BottomBar(
+            navController = navController,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
