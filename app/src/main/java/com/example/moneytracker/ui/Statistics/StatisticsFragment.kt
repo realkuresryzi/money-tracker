@@ -13,9 +13,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,14 +33,17 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.moneytracker.Greeting
+import com.example.moneytracker.Screen
 import com.example.moneytracker.ui.theme.MoneyTrackerTheme
 import com.example.moneytracker.ui.theme.Purple40
 import com.jaikeerthick.composable_graphs.composables.bar.BarGraph
 import com.jaikeerthick.composable_graphs.composables.bar.model.BarData
 import com.jaikeerthick.composable_graphs.composables.pie.PieChart
 import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
-
+import com.example.moneytracker.ui.BottomBar.BottomBar
 
 
 class StatisticsFragment : Fragment() {
@@ -48,7 +56,7 @@ class StatisticsFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.Default)
             setContent {
                 MoneyTrackerTheme {
-                    StatisticsPreview()
+                    //StatisticsPreview()
                 }
 
             }
@@ -56,15 +64,38 @@ class StatisticsFragment : Fragment() {
     }
 
 }
-@Preview
 @Composable
-fun StatisticsPreview() {
-    Column {
-        MonthHeadline(monthName = "August")
-        StatisticsBarGraph()
-        StatisticsPieChart()
+fun StatisticsPreview(navController: NavController) {
+
+    ModalNavigationDrawer(drawerContent = { /*TODO*/ }) {
+        Scaffold(
+            bottomBar = {
+                BottomBar(
+                    navController = navController,
+                    modifier = Modifier
+                )
+            },
+        ) { innerPadding ->
+            Column (modifier = Modifier.verticalScroll(rememberScrollState())
+                .padding(innerPadding),
+                verticalArrangement = Arrangement.spacedBy(32.dp)){
+                MonthHeadline(monthName = "August")
+                StatisticsBarGraph()
+                StatisticsPieChart()
+            }
+        }
 
     }
+
+
+
+}
+
+// wrapper to view preview, only for debug purposes
+@Preview
+@Composable
+fun StatisticsToShowPreview(){
+    StatisticsPreview(navController = rememberNavController())
 }
 
 @Composable
@@ -75,6 +106,7 @@ fun MonthHeadline(monthName: String){
         modifier = Modifier
             .padding(25.dp))
 }
+
 
 @Composable
 fun StatisticsBarGraph(){
