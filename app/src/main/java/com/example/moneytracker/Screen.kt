@@ -1,7 +1,15 @@
 package com.example.moneytracker
 
 sealed class Screen(val route: String) {
-    object add : Screen("add")
-    object items : Screen("items")
-    object statistics : Screen("stats")
+    data object AddTransaction : Screen("addTransaction")
+    data object EditTransaction : Screen("editTransaction")
+    data object Items : Screen("items")
+    data object Statistics : Screen("statistics")
+
+    fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { append("/$it") }
+        }
+    }
 }

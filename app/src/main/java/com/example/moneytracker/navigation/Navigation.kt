@@ -11,53 +11,39 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.moneytracker.Screen
+import com.example.moneytracker.ui.screens.EditTransaction
+import com.example.moneytracker.ui.screens.AddTransaction
 
-import com.example.moneytracker.ui.Items.ItemsPreview
-import com.example.moneytracker.ui.Statistics.StatisticsPreview
+import com.example.moneytracker.ui.screens.ItemsPreview
+import com.example.moneytracker.ui.screens.StatisticsPreview
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.add.route) {
-        composable(route = Screen.add.route) {
-            Add(navController = navController)
+    NavHost(navController = navController, startDestination = Screen.Items.route) {
+        composable(route = Screen.AddTransaction.route) {
+            AddTransaction(navController = navController)
         }
-        composable(route = Screen.items.route) {
+        composable(route = Screen.Items.route) {
             ItemsPreview(navController = navController)
         }
-        composable(route = Screen.statistics.route) {
+        composable(route = Screen.Statistics.route) {
             StatisticsPreview(navController = navController)
         }
     }
 }
 
-//to be replaced with implementation of add screen
-@Composable
-fun Add(navController: NavController) {
-    Column (
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(text = "adding")
-        Button (
-            onClick = {
-                navController.navigate(Screen.items.route)
-            }
-        ) {
-            Text(text = "to items")
-        }
-    }
-}
 
 //not in use, just to show how to work with navigation
 @Composable
 fun Items(navController: NavController) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(text = "viewing items")
-        Button (
+        Button(
             onClick = {
-                navController.navigate(Screen.add.route)
+                navController.navigate(Screen.AddTransaction.route)
             }
         ) {
             Text(text = "to add")

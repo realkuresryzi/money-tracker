@@ -20,15 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.moneytracker.R
 import com.example.moneytracker.Screen
-
-class BottomBar {
-}
+import com.example.moneytracker.ui.theme.OffWhite
 
 @Composable
 fun BottomBar(
     navController: NavController,
     modifier: Modifier,
-    color: Color = Color(220, 220, 240)
+    color: Color = OffWhite
 ) {
     Column(modifier = modifier.background(color = color)) {
         Row(
@@ -39,15 +37,15 @@ fun BottomBar(
         ) {
             BottomBarItem(
                 item = BottomBarItem.Items,
-                onItemClick = { navController.navigate(Screen.items.route) }
+                onItemClick = { navController.navigate(Screen.Items.route) }
             )
             BottomBarItem(
                 item = BottomBarItem.Add,
-                onItemClick = { navController.navigate(Screen.add.route) }
+                onItemClick = { navController.navigate(Screen.AddTransaction.route) }
             )
             BottomBarItem(
                 item = BottomBarItem.Statistics,
-                onItemClick = { navController.navigate(Screen.statistics.route) }
+                onItemClick = { navController.navigate(Screen.Statistics.route) }
             )
         }
     }
@@ -84,7 +82,7 @@ sealed class BottomBarItem(
     val icon: Int,
     val label: String
 ) {
-    object Items : BottomBarItem(R.drawable.invoice_list, "Items")
-    object Add : BottomBarItem(R.drawable.plus, "Add")
-    object Statistics : BottomBarItem(R.drawable.chart_box, "Statistics")
+    data object Items : BottomBarItem(R.drawable.invoice_list, "Items")
+    data object Add : BottomBarItem(R.drawable.plus, "Add")
+    data object Statistics : BottomBarItem(R.drawable.chart_box, "Statistics")
 }
