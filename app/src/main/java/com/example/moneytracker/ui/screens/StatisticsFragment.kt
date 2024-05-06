@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -145,6 +147,8 @@ fun StatisticsPieChart() {
         PieData(value = 500F, label = "Google"),
     )
 
+    val context = LocalContext.current;
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -155,9 +159,9 @@ fun StatisticsPieChart() {
                 .padding(vertical = 20.dp)
                 .size(220.dp),
             data = pieChartData,
-            /**onSliceClick = { pieData ->
+            onSliceClick = { pieData ->
             Toast.makeText(context, "${pieData.label}", Toast.LENGTH_SHORT).show()
-            }**/
+            }
         )
     }
 }
