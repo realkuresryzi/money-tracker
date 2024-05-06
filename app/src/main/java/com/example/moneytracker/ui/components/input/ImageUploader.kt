@@ -22,7 +22,9 @@ fun ImageUploader(onImageSelected: (Uri) -> Unit) {
         uri?.let { onImageSelected(it) }
     }
 
-    Button(onClick = { activityResultLauncher.launch("image/*") }) {
+    Button(
+        onClick = { activityResultLauncher.launch("image/*") },
+    ) {
         Text("Select Image")
     }
 }

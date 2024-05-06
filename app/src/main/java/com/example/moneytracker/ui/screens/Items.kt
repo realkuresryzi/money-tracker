@@ -1,38 +1,34 @@
-package com.example.moneytracker.ui.Items
+package com.example.moneytracker.ui.screens
 
 import android.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.moneytracker.R
-import com.example.moneytracker.Screen
 import com.example.moneytracker.data.Category
-import com.example.moneytracker.data.Record
+import com.example.moneytracker.data.Transaction
 import com.example.moneytracker.ui.theme.MoneyTrackerTheme
 import com.example.moneytracker.ui.theme.Purple40
 import java.util.Date
@@ -59,23 +55,29 @@ class ItemsFragment : Fragment() {
 
 @Composable
 fun ItemsPreview(navController: NavController) {
-    val category = Category("1", "sports", Color.Black, "", true)
+    val category = Category(
+        "1",
+        "sports",
+        Color.Black,
+        ImageVector.vectorResource(id = R.drawable.cart),
+        true
+    )
     val items = listOf(
-        Record("1", "Item 1", category, Date()),
-        Record("2", "Item 2", category, Date()),
-        Record("1", "Item 1", category, Date()),
-        Record("2", "Item 2", category, Date()),
-        Record("1", "Item 1", category, Date()),
-        Record("2", "Item 2", category, Date()),
-        Record("1", "Item 1", category, Date()),
-        Record("2", "Item 2", category, Date()),
-        Record("1", "Item 1", category, Date()),
-        Record("2", "Item 2", category, Date()),
-        Record("1", "Item 1", category, Date()),
-        Record("2", "Item 2", category, Date()),
-        Record("1", "Item 1", category, Date()),
-        Record("2", "Item 2", category, Date()),
-        Record("3", "Item 3", category, Date())
+        Transaction("1", "Item 1", 12.78, category, Date()),
+        Transaction("2", "Item 2", 12.78, category, Date()),
+        Transaction("1", "Item 1", 12.78, category, Date()),
+        Transaction("2", "Item 2", 12.78, category, Date()),
+        Transaction("1", "Item 1", 12.78, category, Date()),
+        Transaction("2", "Item 2", 12.78, category, Date()),
+        Transaction("1", "Item 1", 12.78, category, Date()),
+        Transaction("2", "Item 2", 12.78, category, Date()),
+        Transaction("1", "Item 1", 12.78, category, Date()),
+        Transaction("2", "Item 2", 12.78, category, Date()),
+        Transaction("1", "Item 1", 12.78, category, Date()),
+        Transaction("2", "Item 2", 12.78, category, Date()),
+        Transaction("1", "Item 1", 12.78, category, Date()),
+        Transaction("2", "Item 2", 12.78, category, Date()),
+        Transaction("3", "Item 3", 12.78, category, Date())
     )
     Column(
         modifier = Modifier.fillMaxSize()
@@ -113,7 +115,7 @@ fun BalanceHeader(balance: Number, modifier: Modifier) {
 }
 
 @Composable
-fun ItemsList(items: List<Record>, modifier: Modifier) {
+fun ItemsList(items: List<Transaction>, modifier: Modifier) {
     LazyColumn(modifier = modifier) {
         items.forEach { item ->
             item {
@@ -124,7 +126,7 @@ fun ItemsList(items: List<Record>, modifier: Modifier) {
 }
 
 @Composable
-fun ItemRow(item: Record) {
+fun ItemRow(item: Transaction) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier

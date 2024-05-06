@@ -1,19 +1,16 @@
-package com.example.moneytracker.ui.Statistics
+package com.example.moneytracker.ui.screens
 
 import android.app.Fragment
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -29,14 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.moneytracker.Greeting
-import com.example.moneytracker.Screen
 import com.example.moneytracker.ui.theme.MoneyTrackerTheme
 import com.example.moneytracker.ui.theme.Purple40
 import com.jaikeerthick.composable_graphs.composables.bar.BarGraph
@@ -64,6 +57,7 @@ class StatisticsFragment : Fragment() {
     }
 
 }
+
 @Composable
 fun StatisticsPreview(navController: NavController) {
 
@@ -76,9 +70,12 @@ fun StatisticsPreview(navController: NavController) {
                 )
             },
         ) { innerPadding ->
-            Column (modifier = Modifier.verticalScroll(rememberScrollState())
-                .padding(innerPadding),
-                verticalArrangement = Arrangement.spacedBy(32.dp)){
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.spacedBy(32.dp)
+            ) {
                 MonthHeadline(monthName = "August")
                 StatisticsBarGraph()
                 StatisticsPieChart()
@@ -88,58 +85,60 @@ fun StatisticsPreview(navController: NavController) {
     }
 
 
-
 }
 
 // wrapper to view preview, only for debug purposes
 @Preview
 @Composable
-fun StatisticsToShowPreview(){
+fun StatisticsToShowPreview() {
     StatisticsPreview(navController = rememberNavController())
 }
 
 @Composable
-fun MonthHeadline(monthName: String){
-    Text(text = monthName,
+fun MonthHeadline(monthName: String) {
+    Text(
+        text = monthName,
         color = Purple40,
         fontSize = 50.sp,
         modifier = Modifier
-            .padding(25.dp))
+            .padding(25.dp)
+    )
 }
 
 
 @Composable
-fun StatisticsBarGraph(){
+fun StatisticsBarGraph() {
     Box {
-        Card (
-            modifier = Modifier.border(3.dp, Color.Black))
-            {
-                Row (Modifier.padding(20.dp)){
-                    Column (Modifier.padding(20.dp)) {
-                        Text(text = "Expenses", fontSize = 15.sp)
-                        Text(text = "25000", fontSize = 25.sp)
-                    }
-                    Column (Modifier.padding(20.dp)) {
-                        Text(text = "Income", fontSize = 15.sp)
-                        Text(text = "35000", fontSize = 25.sp)
-                    }
-                    Column (Modifier.padding(20.dp)){
-                        Text(text = "Balance", fontSize = 15.sp)
-                        Text(text = "10000", fontSize = 25.sp)
-                    }
-
+        Card(
+            modifier = Modifier.border(3.dp, Color.Black)
+        )
+        {
+            Row(Modifier.padding(20.dp)) {
+                Column(Modifier.padding(20.dp)) {
+                    Text(text = "Expenses", fontSize = 15.sp)
+                    Text(text = "25000", fontSize = 25.sp)
                 }
-                BarGraph(
-                    data = listOf(BarData(x = "22", y = 20), BarData(x = "23", y = 30)),
-                )
+                Column(Modifier.padding(20.dp)) {
+                    Text(text = "Income", fontSize = 15.sp)
+                    Text(text = "35000", fontSize = 25.sp)
+                }
+                Column(Modifier.padding(20.dp)) {
+                    Text(text = "Balance", fontSize = 15.sp)
+                    Text(text = "10000", fontSize = 25.sp)
+                }
+
             }
+            BarGraph(
+                data = listOf(BarData(x = "22", y = 20), BarData(x = "23", y = 30)),
+            )
+        }
 
     }
 
 }
 
 @Composable
-fun StatisticsPieChart(){
+fun StatisticsPieChart() {
     val pieChartData = listOf(
         PieData(value = 130F, label = "HTC", color = Color.Green),
         PieData(value = 260F, label = "Apple", labelColor = Color.Blue),
@@ -147,15 +146,17 @@ fun StatisticsPieChart(){
     )
 
     Column(
-        modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
-    ){
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         PieChart(
             modifier = Modifier
                 .padding(vertical = 20.dp)
                 .size(220.dp),
             data = pieChartData,
             /**onSliceClick = { pieData ->
-                Toast.makeText(context, "${pieData.label}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${pieData.label}", Toast.LENGTH_SHORT).show()
             }**/
         )
     }

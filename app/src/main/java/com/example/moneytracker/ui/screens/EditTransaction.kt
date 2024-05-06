@@ -1,7 +1,6 @@
 package com.example.moneytracker.ui.screens
 
 import ImageUploader
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,34 +19,30 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.example.moneytracker.domain.models.Transaction
-import com.example.moneytracker.domain.models.TransactionCategory
-import com.example.moneytracker.ui.components.CategoryChip
-import com.example.moneytracker.ui.components.CustomInputField
-import com.example.moneytracker.ui.components.NumericInputField
-import com.example.moneytracker.ui.components.shared.Headline
-import com.example.moneytracker.ui.components.shared.Label
+import com.example.moneytracker.data.Category
+import com.example.moneytracker.data.Transaction
+import com.example.moneytracker.ui.components.input.CategoryChip
+import com.example.moneytracker.ui.components.input.CustomInputField
+import com.example.moneytracker.ui.components.input.NumericInputField
+import com.example.moneytracker.ui.components.text.Headline
+import com.example.moneytracker.ui.components.text.Label
 import loadImage
-import java.util.UUID
 
 @Composable
 fun EditTransaction(
     transaction: Transaction,
-    expenseCategories: List<TransactionCategory>,
-    incomeCategories: List<TransactionCategory>
+    expenseCategories: List<Category>,
+    incomeCategories: List<Category>
 ) {
-    var selectedCategory by remember { mutableStateOf<TransactionCategory?>(transaction.category) }
+    var selectedCategory by remember { mutableStateOf<Category?>(transaction.category) }
     var amount by remember { mutableStateOf(transaction.amount.toString()) }
-    var description by remember { mutableStateOf(transaction.description) }
+    var description by remember { mutableStateOf(transaction.title) }
     var imageUri by remember { mutableStateOf(transaction.imageUri) }
 
     Column(

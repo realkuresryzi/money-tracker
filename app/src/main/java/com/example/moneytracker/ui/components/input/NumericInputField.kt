@@ -1,4 +1,4 @@
-package com.example.moneytracker.ui.components
+package com.example.moneytracker.ui.components.input
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.moneytracker.ui.components.text.ErrorMessage
 
 @Composable
 fun NumericInputField(
@@ -25,7 +26,7 @@ fun NumericInputField(
 
 
     errorMessage = when {
-        text.isBlank() -> "Field cannot be empty"
+        text.isBlank() -> "Field is required"
         text.toDoubleOrNull() == null -> "Invalid format"
         else -> ""
     }
@@ -50,14 +51,10 @@ fun NumericInputField(
             keyboardType = KeyboardType.Number,
         ),
         modifier = modifier
+            .padding(horizontal = 15.dp)
             .fillMaxWidth()
     )
     if (errorMessage.isNotEmpty()) {
-        Text(
-            text = errorMessage,
-            color = Color.Red,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(top = 10.dp)
-        )
+        ErrorMessage(errorMessage = errorMessage)
     }
 }

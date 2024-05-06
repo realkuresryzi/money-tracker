@@ -8,37 +8,86 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.example.moneytracker.domain.models.TransactionCategory
-import com.example.moneytracker.ui.components.CategoryChip
-import com.example.moneytracker.ui.components.CustomInputField
-import com.example.moneytracker.ui.components.shared.Headline
-import com.example.moneytracker.ui.components.shared.Label
-import com.example.moneytracker.ui.components.NumericInputField
+import androidx.navigation.NavController
+import com.example.moneytracker.R
+import com.example.moneytracker.Screen
+import com.example.moneytracker.data.Category
+import com.example.moneytracker.ui.BottomBar.BottomBar
+import com.example.moneytracker.ui.components.input.CategoryChip
+import com.example.moneytracker.ui.components.input.CustomInputField
+import com.example.moneytracker.ui.components.text.Headline
+import com.example.moneytracker.ui.components.text.Label
+import com.example.moneytracker.ui.components.input.NumericInputField
 import loadImage
 
 
 @Composable
-fun AddExpense(
-    expenseCategories: List<TransactionCategory>,
-    incomeCategories: List<TransactionCategory>
+fun AddTransaction(
+    navController: NavController,
 ) {
-    var selectedCategory by remember { mutableStateOf<TransactionCategory?>(null) }
+    val expenseCategories = listOf(
+        Category(
+            "1",
+            "work",
+            Color.Green,
+            ImageVector.vectorResource(id = R.drawable.cart),
+            true
+        ),
+        Category(
+            "2",
+            "sport",
+            Color.Blue,
+            ImageVector.vectorResource(id = R.drawable.basketball),
+            true
+        ),
+        Category(
+            "3",
+            "slots",
+            Color.Red,
+            ImageVector.vectorResource(id = R.drawable.home),
+            true
+        ),
+        Category(
+            "4",
+            "food",
+            Color.Magenta,
+            ImageVector.vectorResource(id = R.drawable.food_fork_drink),
+            true
+        )
+    )
+    val incomeCategories = listOf(
+        Category(
+            "5",
+            "salary",
+            Color.Cyan,
+            ImageVector.vectorResource(id = R.drawable.shopping),
+            true
+        ),
+        Category(
+            "6",
+            "lottery",
+            Color.Yellow,
+            ImageVector.vectorResource(id = R.drawable.invoice_list),
+            true
+        )
+    )
+    var selectedCategory by remember { mutableStateOf<Category?>(null) }
     var amount by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
 
     Column(
         modifier = Modifier
-            .padding(15.dp)
             .fillMaxSize()
     ) {
-        Headline(text = "Add transaction")
         Label(text = "Expense")
         LazyRow {
             items(expenseCategories) { category ->
@@ -49,8 +98,6 @@ fun AddExpense(
                 )
             }
         }
-
-        Spacer(modifier = Modifier.height(15.dp))
 
         Label(text = "Income")
         LazyRow {
@@ -84,7 +131,9 @@ fun AddExpense(
         Spacer(modifier = Modifier.height(15.dp))
 
         Row(
-            Modifier.fillMaxWidth()
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp)
         ) {
             ImageUploader(onImageSelected = { imageUri = it })
             Spacer(modifier = Modifier.weight(1f))
@@ -109,8 +158,9 @@ fun AddExpense(
         Spacer(modifier = Modifier.weight(1f))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp),
         ) {
             Button(
                 onClick = {
@@ -129,15 +179,16 @@ fun AddExpense(
                         && selectedCategory != null
                         && description.isNotBlank(),
                 onClick = {
-                    selectedCategory = null
-                    amount = ""
-                    description = ""
-                    imageUri = null
+                    navController.navigate(Screen.Items.route)
                 }
             ) {
                 Text(text = "Add")
             }
         }
+        BottomBar(
+            navController = navController,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 

@@ -1,16 +1,13 @@
-package com.example.moneytracker.ui.components
+package com.example.moneytracker.ui.components.input
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.moneytracker.ui.components.text.ErrorMessage
 
 @Composable
 fun CustomInputField(
@@ -24,7 +21,7 @@ fun CustomInputField(
     var errorMessage by remember { mutableStateOf("") }
 
     errorMessage = when {
-        text.isBlank() -> "Field cannot be empty"
+        text.isBlank() -> "Field is required"
         else -> ""
     }
 
@@ -45,14 +42,10 @@ fun CustomInputField(
         singleLine = true,
         isError = errorMessage.isNotEmpty(),
         modifier = modifier
+            .padding(horizontal = 15.dp)
             .fillMaxWidth()
     )
     if (errorMessage.isNotEmpty()) {
-        Text(
-            text = errorMessage,
-            color = Color.Red,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(top = 10.dp)
-        )
+        ErrorMessage(errorMessage = errorMessage)
     }
 }

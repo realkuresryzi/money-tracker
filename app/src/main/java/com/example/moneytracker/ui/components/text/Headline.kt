@@ -1,4 +1,4 @@
-package com.example.moneytracker.ui.components.shared
+package com.example.moneytracker.ui.components.text
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

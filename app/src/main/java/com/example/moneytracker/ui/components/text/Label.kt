@@ -1,4 +1,4 @@
-package com.example.moneytracker.ui.components.shared
+package com.example.moneytracker.ui.components.text
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -13,6 +13,6 @@ fun Label(text: String) {
     Text(
         text = text,
         style = TextStyle(fontSize = 18.sp),
-        modifier = Modifier.padding(vertical = 15.dp)
+        modifier = Modifier.padding(15.dp)
     )
 }
