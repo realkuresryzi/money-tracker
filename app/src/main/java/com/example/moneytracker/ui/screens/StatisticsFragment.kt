@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -63,7 +64,7 @@ class StatisticsFragment : Fragment() {
 @Composable
 fun StatisticsPreview(navController: NavController) {
 
-    ModalNavigationDrawer(drawerContent = { /*TODO*/ }) {
+    ModalNavigationDrawer(drawerContent = { }) {
         Scaffold(
             bottomBar = {
                 BottomBar(
@@ -112,7 +113,6 @@ fun MonthHeadline(monthName: String) {
 fun StatisticsBarGraph() {
     Box {
         Card(
-            modifier = Modifier.border(3.dp, Color.Black)
         )
         {
             Row(Modifier.padding(20.dp)) {
@@ -132,6 +132,7 @@ fun StatisticsBarGraph() {
             }
             BarGraph(
                 data = listOf(BarData(x = "22", y = 20), BarData(x = "23", y = 30)),
+                modifier = Modifier.padding(20.dp)
             )
         }
 
