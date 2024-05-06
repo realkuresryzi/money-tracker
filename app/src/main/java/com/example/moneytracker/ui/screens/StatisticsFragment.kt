@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -24,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,7 +64,7 @@ class StatisticsFragment : Fragment() {
 @Composable
 fun StatisticsPreview(navController: NavController) {
 
-    ModalNavigationDrawer(drawerContent = { /*TODO*/ }) {
+    ModalNavigationDrawer(drawerContent = { }) {
         Scaffold(
             bottomBar = {
                 BottomBar(
@@ -110,7 +113,6 @@ fun MonthHeadline(monthName: String) {
 fun StatisticsBarGraph() {
     Box {
         Card(
-            modifier = Modifier.border(3.dp, Color.Black)
         )
         {
             Row(Modifier.padding(20.dp)) {
@@ -130,6 +132,7 @@ fun StatisticsBarGraph() {
             }
             BarGraph(
                 data = listOf(BarData(x = "22", y = 20), BarData(x = "23", y = 30)),
+                modifier = Modifier.padding(20.dp)
             )
         }
 
@@ -145,6 +148,8 @@ fun StatisticsPieChart() {
         PieData(value = 500F, label = "Google"),
     )
 
+    val context = LocalContext.current;
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -155,9 +160,9 @@ fun StatisticsPieChart() {
                 .padding(vertical = 20.dp)
                 .size(220.dp),
             data = pieChartData,
-            /**onSliceClick = { pieData ->
+            onSliceClick = { pieData ->
             Toast.makeText(context, "${pieData.label}", Toast.LENGTH_SHORT).show()
-            }**/
+            }
         )
     }
 }
