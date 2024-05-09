@@ -1,0 +1,51 @@
+package com.example.moneytracker.feature_transaction.presentation.navigation
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.moneytracker.feature_transaction.presentation.Screen
+import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.AddTransaction
+
+import com.example.moneytracker.feature_transaction.presentation.transactions.ItemsPreview
+import com.example.moneytracker.feature_transaction.presentation.statistics.StatisticsPreview
+
+@Composable
+fun Navigation() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = Screen.Items.route) {
+        composable(route = Screen.AddTransaction.route) {
+            AddTransaction(navController = navController)
+        }
+        composable(route = Screen.Items.route) {
+            ItemsPreview(navController = navController)
+        }
+        composable(route = Screen.Statistics.route) {
+            StatisticsPreview(navController = navController)
+        }
+    }
+}
+
+
+//not in use, just to show how to work with navigation
+@Composable
+fun Items(navController: NavController) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(text = "viewing items")
+        Button(
+            onClick = {
+                navController.navigate(Screen.AddTransaction.route)
+            }
+        ) {
+            Text(text = "to add")
+        }
+    }
+}
