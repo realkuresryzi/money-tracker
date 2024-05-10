@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.moneytracker.Screen
 import com.example.moneytracker.ui.screens.EditTransaction
 import com.example.moneytracker.ui.screens.AddTransaction
+import com.example.moneytracker.ui.screens.Categories
 
 import com.example.moneytracker.ui.screens.ItemsPreview
 import com.example.moneytracker.ui.screens.StatisticsPreview
@@ -30,23 +31,8 @@ fun Navigation() {
         composable(route = Screen.Statistics.route) {
             StatisticsPreview(navController = navController)
         }
-    }
-}
-
-
-//not in use, just to show how to work with navigation
-@Composable
-fun Items(navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(text = "viewing items")
-        Button(
-            onClick = {
-                navController.navigate(Screen.AddTransaction.route)
-            }
-        ) {
-            Text(text = "to add")
+        composable(route = Screen.Categories.route) {
+            Categories(navController = navController)
         }
     }
 }

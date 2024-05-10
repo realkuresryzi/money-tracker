@@ -87,7 +87,6 @@ fun StatisticsPreview(navController: NavController) {
 
     }
 
-
 }
 
 // wrapper to view preview, only for debug purposes

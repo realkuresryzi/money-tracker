@@ -40,12 +40,12 @@ fun BottomBar(
                 onItemClick = { navController.navigate(Screen.Items.route) }
             )
             BottomBarItem(
-                item = BottomBarItem.Add,
-                onItemClick = { navController.navigate(Screen.AddTransaction.route) }
-            )
-            BottomBarItem(
                 item = BottomBarItem.Statistics,
                 onItemClick = { navController.navigate(Screen.Statistics.route) }
+            )
+            BottomBarItem(
+                item = BottomBarItem.Categories,
+                onItemClick = { navController.navigate(Screen.Categories.route) }
             )
         }
     }
@@ -60,7 +60,7 @@ fun BottomBarItem(
         onClick = onItemClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
         modifier = Modifier
-            .width(115.dp)
+            .width(120.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -83,6 +83,6 @@ sealed class BottomBarItem(
     val label: String
 ) {
     data object Items : BottomBarItem(R.drawable.invoice_list, "Items")
-    data object Add : BottomBarItem(R.drawable.plus, "Add")
+    data object Categories : BottomBarItem(R.drawable.shape, "Categories")
     data object Statistics : BottomBarItem(R.drawable.chart_box, "Statistics")
 }

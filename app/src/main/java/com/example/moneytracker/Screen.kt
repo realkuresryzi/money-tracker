@@ -5,6 +5,7 @@ sealed class Screen(val route: String) {
     data object EditTransaction : Screen("editTransaction")
     data object Items : Screen("items")
     data object Statistics : Screen("statistics")
+    data object Categories : Screen("categories")
 
     fun withArgs(vararg args: String): String {
         return buildString {
