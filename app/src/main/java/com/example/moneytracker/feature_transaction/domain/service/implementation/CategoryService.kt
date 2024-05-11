@@ -10,8 +10,8 @@ class CategoryService(
     private val repository: ICategoryRepository,
     private val categoryMapper: EntityMapper<Category, CategoryModel>
 ) : ICategoryService {
-    override suspend fun getCategories(): List<CategoryModel> {
-        return repository.getCategories().map { category ->
+    override suspend fun getCategories(isExpenseFilter: Boolean?): List<CategoryModel> {
+        return repository.getCategories(isExpenseFilter).map { category ->
             categoryMapper.entityToModel(category)
         }
     }

@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.moneytracker.R
-import com.example.moneytracker.feature_transaction.presentation.Screen
+import com.example.moneytracker.feature_transaction.presentation.navigation.Screen
 import com.example.moneytracker.ui.theme.OffWhite
 
 @Composable
@@ -37,11 +37,11 @@ fun BottomBar(
         ) {
             BottomBarItem(
                 item = BottomBarItem.Items,
-                onItemClick = { navController.navigate(Screen.Items.route) }
+                onItemClick = { navController.navigate(Screen.Transactions.route) }
             )
             BottomBarItem(
                 item = BottomBarItem.Add,
-                onItemClick = { navController.navigate(Screen.AddTransaction.route) }
+                onItemClick = { navController.navigate(Screen.AddEditTransaction.route) }
             )
             BottomBarItem(
                 item = BottomBarItem.Statistics,

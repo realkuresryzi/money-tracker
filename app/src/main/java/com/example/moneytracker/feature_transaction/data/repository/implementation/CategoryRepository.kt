@@ -4,15 +4,15 @@ import com.example.moneytracker.feature_transaction.data.dao.CategoryDao
 import com.example.moneytracker.feature_transaction.data.entity.Category
 import com.example.moneytracker.feature_transaction.data.repository.EntityNotFoundException
 import com.example.moneytracker.feature_transaction.data.repository.ICategoryRepository
-import kotlinx.coroutines.flow.Flow
 
 class CategoryRepository(
     private val dao: CategoryDao
 ) : ICategoryRepository {
-    override suspend fun getCategories(): List<Category> {
+    override suspend fun getCategories(isExpenseFilter: Boolean?): List<Category> {
         return dao.getCategories()
     }
 
+    @Throws(EntityNotFoundException::class)
     override suspend fun getCategoryById(id: Int): Category {
         return dao.getCategoryById(id)
             ?: throw EntityNotFoundException("Could not find category with id $id")

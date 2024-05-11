@@ -1,13 +1,16 @@
 package com.example.moneytracker.feature_transaction.domain.service
 
-import com.example.moneytracker.feature_transaction.data.entity.Transaction
+import com.example.moneytracker.feature_transaction.domain.model.CategoryModel
 import com.example.moneytracker.feature_transaction.domain.model.TransactionModel
-import kotlinx.coroutines.flow.Flow
+import com.example.moneytracker.feature_transaction.domain.util.OrderType
+import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
 
 interface ITransactionService {
     suspend fun getTransactions(
-        isExpense: Boolean? = null,
-        categoryId: Int? = null
+        isExpenseFilter: Boolean? = null,
+        categoryFilter: CategoryModel? = null,
+        order: TransactionOrder = TransactionOrder.DATE,
+        orderType: OrderType = OrderType.ASC
     ): List<TransactionModel>
 
     suspend fun getTransaction(id: Int): TransactionModel
