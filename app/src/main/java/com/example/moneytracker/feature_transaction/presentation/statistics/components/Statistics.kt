@@ -1,4 +1,4 @@
-package com.example.moneytracker.feature_transaction.presentation.statistics
+package com.example.moneytracker.feature_transaction.presentation.statistics.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +25,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
+import com.example.moneytracker.feature_transaction.presentation.statistics.CategoryMonthTotal
+import com.example.moneytracker.feature_transaction.presentation.statistics.ExpenseInfo
+import com.example.moneytracker.feature_transaction.presentation.statistics.StatisticsViewModel
 import com.example.moneytracker.ui.theme.Purple40
 import com.jaikeerthick.composable_graphs.composables.bar.BarGraph
 import com.jaikeerthick.composable_graphs.composables.bar.model.BarData
@@ -104,9 +107,6 @@ fun StatisticsBarGraph(expenseInfo: ExpenseInfo) {
                 }
 
             }
-            BarGraph(
-                data = listOf(BarData(x = "22", y = 20), BarData(x = "23", y = 30)),
-            )
         }
 
     }

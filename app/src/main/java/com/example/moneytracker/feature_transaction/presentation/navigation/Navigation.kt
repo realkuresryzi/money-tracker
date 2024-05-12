@@ -7,9 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.components.AddEditTransaction
-
+import com.example.moneytracker.feature_transaction.presentation.statistics.components.Statistics
 import com.example.moneytracker.feature_transaction.presentation.transactions.components.Transactions
-import com.example.moneytracker.ui.screens.StatisticsPreview
 
 @Composable
 fun Navigation() {
@@ -42,7 +41,7 @@ fun Navigation() {
 //            AddEditCategory(navController = navController)
 //        }
         composable(route = Screen.Statistics.route) {
-            StatisticsPreview(navController = navController)
+            Statistics(navController = navController)
         }
     }
 }
