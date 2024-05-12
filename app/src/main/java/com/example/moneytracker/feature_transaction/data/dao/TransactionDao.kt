@@ -54,29 +54,38 @@ interface TransactionDao {
             and (:categoryFilter is null or category.id = :categoryFilter)
             and strftime('%m', `transaction`.createdAt) = :month
             and strftime('%Y', `transaction`.createdAt) = :year
-            order by
-                case when :orderAsc = 1 then
-                    case :order
-                        when '${Constants.TITLE}' then `transaction`.title
-                        when '${Constants.AMOUNT}' then `transaction`.amount
-                        else `transaction`.createdAt 
-                    end 
-                end asc,
-                case when :orderAsc = 0 then
-                    case :order
-                        when '${Constants.TITLE}' then `transaction`.title
-                        when '${Constants.AMOUNT}' then `transaction`.amount
-                        else `transaction`.createdAt 
-                    end
-                end desc
         """
     )
     suspend fun getTransactionsByMonth(
         isExpenseFilter: Boolean? = null,
         categoryFilter: Int? = null,
-        order: String = Constants.DATE,
-        orderAsc: Boolean = true,
         month: Int,
         year: Int
     ): List<Transaction>
+
+    @Query(
+        """select sum(amount) from `transaction`
+            inner join category on `transaction`.categoryId = category.id
+            where category.isExpense = 1
+            and strftime('%m', `transaction`.createdAt) = :month
+            and strftime('%Y', `transaction`.createdAt) = :year
+        """
+    )
+    suspend fun getTotalExpenseByMonth(
+        month: Int,
+        year: Int
+    ): Double
+
+    @Query(
+        """select sum(amount) from `transaction`
+            inner join category on `transaction`.categoryId = category.id
+            where category.isExpense = 0
+            and strftime('%m', `transaction`.createdAt) = :month
+            and strftime('%Y', `transaction`.createdAt) = :year
+        """
+    )
+    suspend fun getTotalIncomeByMonth(
+        month: Int,
+        year: Int
+    ): Double
 }
