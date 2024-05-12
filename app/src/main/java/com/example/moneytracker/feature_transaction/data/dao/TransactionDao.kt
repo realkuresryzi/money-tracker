@@ -46,4 +46,37 @@ interface TransactionDao {
 
     @Delete
     suspend fun deleteTransaction(transaction: Transaction)
+
+    @Query(
+        """select * from `transaction`
+            inner join category on `transaction`.categoryId = category.id
+            where (:isExpenseFilter is null or category.isExpense = :isExpenseFilter)
+            and (:categoryFilter is null or category.id = :categoryFilter)
+            and strftime('%m', `transaction`.createdAt) = :month
+            and strftime('%Y', `transaction`.createdAt) = :year
+            order by
+                case when :orderAsc = 1 then
+                    case :order
+                        when '${Constants.TITLE}' then `transaction`.title
+                        when '${Constants.AMOUNT}' then `transaction`.amount
+                        else `transaction`.createdAt 
+                    end 
+                end asc,
+                case when :orderAsc = 0 then
+                    case :order
+                        when '${Constants.TITLE}' then `transaction`.title
+                        when '${Constants.AMOUNT}' then `transaction`.amount
+                        else `transaction`.createdAt 
+                    end
+                end desc
+        """
+    )
+    suspend fun getTransactionsByMonth(
+        isExpenseFilter: Boolean? = null,
+        categoryFilter: Int? = null,
+        order: String = Constants.DATE,
+        orderAsc: Boolean = true,
+        month: Int,
+        year: Int
+    ): List<Transaction>
 }
