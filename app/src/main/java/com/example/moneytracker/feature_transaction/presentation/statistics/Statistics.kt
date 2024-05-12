@@ -1,11 +1,5 @@
-package com.example.moneytracker.ui.screens
+package com.example.moneytracker.feature_transaction.presentation.statistics
 
-import android.app.Fragment
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -25,47 +18,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
-import com.example.moneytracker.ui.theme.MoneyTrackerTheme
 import com.example.moneytracker.ui.theme.Purple40
 import com.jaikeerthick.composable_graphs.composables.bar.BarGraph
 import com.jaikeerthick.composable_graphs.composables.bar.model.BarData
 import com.jaikeerthick.composable_graphs.composables.pie.PieChart
 import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
 
-
-
-class StatisticsFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater?,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(this.context).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.Default)
-            setContent {
-                MoneyTrackerTheme {
-                    //StatisticsPreview()
-                }
-
-            }
-        }
-    }
-
-}
-
 @Composable
-fun StatisticsPreview(navController: NavController) {
+fun Statistics(
+    navController: NavController,
+    viewModel: StatisticsViewModel = viewModel()
+){
 
-    ModalNavigationDrawer(drawerContent = { }) {
+    ModalNavigationDrawer(drawerContent = { /*TODO*/ }) {
         Scaffold(
             bottomBar = {
                 BottomBar(
@@ -80,8 +52,8 @@ fun StatisticsPreview(navController: NavController) {
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                MonthHeadline(monthName = "August")
-                StatisticsBarGraph()
+                MonthHeadline(monthName = viewModel.getCurrentMonth() + " " + viewModel.getCurrentYear())
+                StatisticsBarGraph(viewModel.getExpenseInfo())
                 StatisticsPieChart()
             }
         }
@@ -95,7 +67,7 @@ fun StatisticsPreview(navController: NavController) {
 @Preview
 @Composable
 fun StatisticsToShowPreview() {
-    StatisticsPreview(navController = rememberNavController())
+    Statistics(navController = rememberNavController(), viewModel = viewModel())
 }
 
 @Composable
@@ -111,29 +83,29 @@ fun MonthHeadline(monthName: String) {
 
 
 @Composable
-fun StatisticsBarGraph() {
+fun StatisticsBarGraph(expenseInfo: ExpenseInfo) {
     Box {
         Card(
+            modifier = Modifier.border(3.dp, Color.Black)
         )
         {
             Row(Modifier.padding(20.dp)) {
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Expenses", fontSize = 15.sp)
-                    Text(text = "25000", fontSize = 25.sp)
+                    Text(text = expenseInfo.getExpense().toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Income", fontSize = 15.sp)
-                    Text(text = "35000", fontSize = 25.sp)
+                    Text(text = expenseInfo.getIncome().toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Balance", fontSize = 15.sp)
-                    Text(text = "10000", fontSize = 25.sp)
+                    Text(text = expenseInfo.getBalance().toString(), fontSize = 25.sp)
                 }
 
             }
             BarGraph(
                 data = listOf(BarData(x = "22", y = 20), BarData(x = "23", y = 30)),
-                modifier = Modifier.padding(20.dp)
             )
         }
 
@@ -149,8 +121,6 @@ fun StatisticsPieChart() {
         PieData(value = 500F, label = "Google"),
     )
 
-    val context = LocalContext.current;
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -161,9 +131,9 @@ fun StatisticsPieChart() {
                 .padding(vertical = 20.dp)
                 .size(220.dp),
             data = pieChartData,
-            onSliceClick = { pieData ->
+            /**onSliceClick = { pieData ->
             Toast.makeText(context, "${pieData.label}", Toast.LENGTH_SHORT).show()
-            }
+            }**/
         )
     }
 }

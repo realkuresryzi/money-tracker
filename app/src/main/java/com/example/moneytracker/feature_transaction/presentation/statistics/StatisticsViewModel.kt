@@ -15,12 +15,24 @@ class StatisticsViewModel @Inject constructor(
 ): ViewModel(){
         var currentMonth: String = "August"
         private var currentYear: Int = 2021
-        private var income : Int = 30000
-        private var expense : Int = 20000
-        private var balance : Int = income - expense
+        private var expenseInfo = ExpenseInfo(3000, 2000)
 
 
         // get data for month from database
+
+
+        fun getCurrentMonth(): String {
+                return this.currentMonth
+        }
+
+        fun getCurrentYear(): Int {
+                return this.currentYear
+        }
+
+        fun getExpenseInfo(): ExpenseInfo {
+                return this.expenseInfo
+        }
+
 
 
 }
