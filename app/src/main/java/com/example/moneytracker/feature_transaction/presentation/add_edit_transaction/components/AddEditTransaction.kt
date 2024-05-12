@@ -26,7 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.moneytracker.feature_transaction.domain.util.Constants
 import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.AddEditTransactionEvent
@@ -42,7 +42,7 @@ import loadImage
 @Composable
 fun AddEditTransaction(
     navController: NavController,
-    viewModel: AddEditTransactionViewModel = viewModel()
+    viewModel: AddEditTransactionViewModel = hiltViewModel()
 ) {
     val title = viewModel.title.value
     val amount = viewModel.amount.value

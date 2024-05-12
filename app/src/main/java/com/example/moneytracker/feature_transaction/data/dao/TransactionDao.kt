@@ -12,9 +12,8 @@ import com.example.moneytracker.feature_transaction.domain.util.Constants
 interface TransactionDao {
     @Query(
         """select * from `transaction`
-            inner join category on `transaction`.categoryId = category.id
-            where (:isExpenseFilter is null or category.isExpense = :isExpenseFilter)
-            and (:categoryFilter is null or category.id = :categoryFilter)
+            where (:isExpenseFilter is null or (SELECT isExpense FROM category WHERE category.id = `transaction`.categoryId) = :isExpenseFilter)
+            and (:categoryFilter is null or `transaction`.categoryId = :categoryFilter)
             order by
                 case when :orderAsc = 1 then
                     case :order

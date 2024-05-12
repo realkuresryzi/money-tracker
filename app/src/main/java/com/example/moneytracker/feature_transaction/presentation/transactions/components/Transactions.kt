@@ -33,7 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.moneytracker.feature_transaction.domain.util.Constants
 import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Transactions(
     navController: NavController,
-    viewModel: TransactionsViewModel = viewModel()
+    viewModel: TransactionsViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
     val scaffoldState = rememberBottomSheetScaffoldState()

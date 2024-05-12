@@ -2,19 +2,20 @@ package com.example.moneytracker.feature_transaction.data.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.example.moneytracker.feature_transaction.domain.model.CategoryModel
 import java.util.Date
 
 @Entity(
     foreignKeys = [
         ForeignKey(
-            entity = CategoryModel::class,
+            entity = Category::class,
             parentColumns = ["id"],
             childColumns = ["categoryId"],
             onDelete = ForeignKey.NO_ACTION
         )
-    ]
+    ],
+    indices = [Index("categoryId")]
 )
 data class Transaction(
     @PrimaryKey(autoGenerate = true)
