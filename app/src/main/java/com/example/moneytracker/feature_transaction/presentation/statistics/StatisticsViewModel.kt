@@ -19,7 +19,7 @@ class StatisticsViewModel @Inject constructor(
         private val categoryService: ICategoryService
 ): ViewModel(){
 
-        val balanceInfo = BalanceInfo(55, 4)
+        val balanceInfo = BalanceInfo(55.0, 4.0)
         val totalForCategoriesForMonth =
                 listOf(TotalForCategoryForMonth(Category(1,"Food", 1, true, 1 ), 100),
                         TotalForCategoryForMonth(Category(2,"Transport", 1, true, 1 ), 200),
@@ -34,6 +34,9 @@ class StatisticsViewModel @Inject constructor(
         init {
                 val currentMonth = YearMonth.now().month.name
                 val currentYear = YearMonth.now().year.toString()
+
+                val balanceInfo = balanceInfo
+
 
                 state = StatisticsState(balanceInfo, totalForCategoriesForMonth, currentMonth, currentYear)
         }

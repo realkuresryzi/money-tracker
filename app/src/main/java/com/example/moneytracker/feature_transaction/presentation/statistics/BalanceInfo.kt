@@ -1,10 +1,10 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics
 
 class BalanceInfo(
-    val income: Int,
-    val expense: Int,
+    val income: Double,
+    val expense: Double,
 ){
-    fun getBalance(): Int {
+    fun getBalance(): Double {
         return income - expense
     }
 }
