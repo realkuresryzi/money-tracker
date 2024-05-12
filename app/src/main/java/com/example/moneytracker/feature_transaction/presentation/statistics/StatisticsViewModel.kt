@@ -23,14 +23,4 @@ class StatisticsViewModel @Inject constructor(
         // get data for month from database
 
 
-        fun getCurrentMonth(): String {
-                return this.currentMonth
-        }
-
-        fun getCurrentYear(): Int {
-                return this.currentYear
-        }
-
-
-
 }
