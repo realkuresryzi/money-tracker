@@ -15,4 +15,14 @@ interface ITransactionRepository {
     suspend fun getTransactionById(id: Int): Transaction
     suspend fun insertTransaction(transaction: Transaction)
     suspend fun deleteTransaction(transaction: Transaction)
+
+    suspend fun getTotalIncomesByMonth(
+        month: Int,
+        year: Int
+    ): Double
+
+    suspend fun getTotalExpensesByMonth(
+        month: Int,
+        year: Int
+    ): Double
 }

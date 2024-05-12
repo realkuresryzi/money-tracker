@@ -42,4 +42,12 @@ class TransactionService(
     override suspend fun deleteTransaction(transaction: TransactionModel) {
         repository.deleteTransaction(transactionMapper.modelToEntity(transaction))
     }
+
+    override suspend fun getTotalIncomesByMonth(month: Int, year: Int): Double {
+        return repository.getTotalIncomesByMonth(month, year)
+    }
+
+    override suspend fun getTotalExpensesByMonth(month: Int, year: Int): Double {
+        return repository.getTotalExpensesByMonth(month, year)
+    }
 }

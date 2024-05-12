@@ -1,11 +1,8 @@
-package com.example.moneytracker.ui.screens
+package com.example.moneytracker.feature_transaction.presentation.statistics.components
 
-import android.app.Fragment
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -25,44 +21,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.moneytracker.ui.theme.MoneyTrackerTheme
+import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
+import com.example.moneytracker.feature_transaction.presentation.statistics.TotalForCategoryForMonth
+import com.example.moneytracker.feature_transaction.presentation.statistics.BalanceInfo
+import com.example.moneytracker.feature_transaction.presentation.statistics.StatisticsViewModel
 import com.example.moneytracker.ui.theme.Purple40
-import com.jaikeerthick.composable_graphs.composables.bar.BarGraph
-import com.jaikeerthick.composable_graphs.composables.bar.model.BarData
 import com.jaikeerthick.composable_graphs.composables.pie.PieChart
 import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
-import com.example.moneytracker.ui.BottomBar.BottomBar
+import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartStyle
+import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartVisibility
 
 
-class StatisticsFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater?,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(this.context).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.Default)
-            setContent {
-                MoneyTrackerTheme {
-                    //StatisticsPreview()
-                }
-
-            }
-        }
-    }
-
-}
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun StatisticsPreview(navController: NavController) {
+fun Statistics(
+    navController: NavController,
+    viewModel: StatisticsViewModel = hiltViewModel()
+){
 
     ModalNavigationDrawer(drawerContent = { }) {
         Scaffold(
@@ -79,9 +61,9 @@ fun StatisticsPreview(navController: NavController) {
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                MonthHeadline(monthName = "August")
-                StatisticsBarGraph()
-                StatisticsPieChart()
+                MonthHeadline(monthName = viewModel.state.currentMonth + " " + viewModel.state.currentYear)
+                StatisticsBarGraph(viewModel.balanceInfo)
+                StatisticsPieChart(viewModel.totalForCategoriesForMonth)
             }
         }
 
@@ -94,7 +76,7 @@ fun StatisticsPreview(navController: NavController) {
 @Preview
 @Composable
 fun StatisticsToShowPreview() {
-    StatisticsPreview(navController = rememberNavController())
+    Statistics(navController = rememberNavController())
 }
 
 @Composable
@@ -104,36 +86,37 @@ fun MonthHeadline(monthName: String) {
         color = Purple40,
         fontSize = 50.sp,
         modifier = Modifier
-            .padding(25.dp)
+            .padding(25.dp),
     )
 }
 
 
 @Composable
-fun StatisticsBarGraph() {
-    Box {
+fun StatisticsBarGraph(balanceInfo: BalanceInfo) {
+    Box (
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
         Card(
+            modifier = Modifier.border(3.dp, Color.Black).padding(20.dp),
+
         )
         {
             Row(Modifier.padding(20.dp)) {
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Expenses", fontSize = 15.sp)
-                    Text(text = "25000", fontSize = 25.sp)
+                    Text(text = balanceInfo.expense.toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Income", fontSize = 15.sp)
-                    Text(text = "35000", fontSize = 25.sp)
+                    Text(text = balanceInfo.income.toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Balance", fontSize = 15.sp)
-                    Text(text = "10000", fontSize = 25.sp)
+                    Text(text = balanceInfo.getBalance().toString(), fontSize = 25.sp)
                 }
 
             }
-            BarGraph(
-                data = listOf(BarData(x = "22", y = 20), BarData(x = "23", y = 30)),
-                modifier = Modifier.padding(20.dp)
-            )
         }
 
     }
@@ -141,27 +124,28 @@ fun StatisticsBarGraph() {
 }
 
 @Composable
-fun StatisticsPieChart() {
-    val pieChartData = listOf(
-        PieData(value = 130F, label = "HTC", color = Color.Green),
-        PieData(value = 260F, label = "Apple", labelColor = Color.Blue),
-        PieData(value = 500F, label = "Google"),
-    )
+fun StatisticsPieChart(expensesByCategoryData: Collection<TotalForCategoryForMonth>) {
+    val pieChartData = mutableListOf<PieData>()
 
-    val context = LocalContext.current;
+    for (category in expensesByCategoryData) {
+        //todo could add color mapped by category
+        pieChartData.add(PieData(value = category.total.toFloat(), label = category.category.name))
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val aContext = LocalContext.current
         PieChart(
             modifier = Modifier
                 .padding(vertical = 20.dp)
-                .size(220.dp),
+                .size(300.dp),
             data = pieChartData,
+            style = PieChartStyle(visibility = PieChartVisibility(true, true, )),
             onSliceClick = { pieData ->
-            Toast.makeText(context, "${pieData.label}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(aContext, "${pieData.label}", Toast.LENGTH_SHORT).show()
             }
         )
     }

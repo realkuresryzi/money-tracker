@@ -30,4 +30,18 @@ class TransactionRepository(
     override suspend fun deleteTransaction(transaction: Transaction) {
         dao.deleteTransaction(transaction)
     }
+
+    override suspend fun getTotalIncomesByMonth(
+        month: Int,
+        year: Int
+    ): Double {
+        return dao.getTotalIncomeByMonth(month, year)
+    }
+
+    override suspend fun getTotalExpensesByMonth(
+        month: Int,
+        year: Int
+    ): Double {
+        return dao.getTotalExpenseByMonth(month, year)
+    }
 }
