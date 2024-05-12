@@ -52,9 +52,9 @@ fun Statistics(
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                MonthHeadline(monthName = viewModel.getCurrentMonth() + " " + viewModel.getCurrentYear())
-                StatisticsBarGraph(viewModel.getExpenseInfo())
-                StatisticsPieChart(viewModel.getCategoryMonthTotalList())
+                MonthHeadline(monthName = viewModel.currentMonth + " " + viewModel.currentYear.toString())
+                StatisticsBarGraph(viewModel.expenseInfo)
+                StatisticsPieChart(viewModel.categoryMonthTotalList)
             }
         }
 
@@ -92,11 +92,11 @@ fun StatisticsBarGraph(expenseInfo: ExpenseInfo) {
             Row(Modifier.padding(20.dp)) {
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Expenses", fontSize = 15.sp)
-                    Text(text = expenseInfo.getExpense().toString(), fontSize = 25.sp)
+                    Text(text = expenseInfo.expense.toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Income", fontSize = 15.sp)
-                    Text(text = expenseInfo.getIncome().toString(), fontSize = 25.sp)
+                    Text(text = expenseInfo.income.toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Balance", fontSize = 15.sp)

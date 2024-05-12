@@ -1,5 +1,6 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics;
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.feature_transaction.domain.service.ICategoryService;
 import com.example.moneytracker.feature_transaction.domain.service.ITransactionService;
@@ -14,31 +15,13 @@ class StatisticsViewModel @Inject constructor(
         private val categoryService: ICategoryService
 ): ViewModel(){
         var currentMonth: String = "August"
-        private var currentYear: Int = 2021
-        private var expenseInfo = ExpenseInfo(3000, 2000)
+        var currentYear: Int = 2021
+        var expenseInfo = ExpenseInfo(3000, 2000)
 
-        private var categoryMonthTotalList = mutableListOf<CategoryMonthTotal>()
+        var categoryMonthTotalList = mutableListOf<CategoryMonthTotal>()
 
 
         // get data for month from database
-
-
-        fun getCurrentMonth(): String {
-                return this.currentMonth
-        }
-
-        fun getCurrentYear(): Int {
-                return this.currentYear
-        }
-
-        fun getExpenseInfo(): ExpenseInfo {
-                return this.expenseInfo
-        }
-
-        fun getCategoryMonthTotalList(): List<CategoryMonthTotal> {
-                return this.categoryMonthTotalList
-        }
-
 
 
 }

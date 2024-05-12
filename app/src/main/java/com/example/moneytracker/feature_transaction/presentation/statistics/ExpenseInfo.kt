@@ -7,11 +7,4 @@ class ExpenseInfo(
     fun getBalance(): Int {
         return income - expense
     }
-    fun getIncome(): Int {
-        return income
-    }
-
-    fun getExpense(): Int {
-        return expense
-    }
 }
