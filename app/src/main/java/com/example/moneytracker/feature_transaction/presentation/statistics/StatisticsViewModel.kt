@@ -26,4 +26,10 @@ class StatisticsViewModel @Inject constructor(
                 )
         val currentMonth: String = "January"
         val currentYear: String = "2021"
+
+        val state: StatisticsState
+
+        init {
+                state = StatisticsState(balanceInfo, totalForCategoriesForMonth, currentMonth, currentYear)
+        }
 }
