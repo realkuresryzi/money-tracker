@@ -1,5 +1,6 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics.components
 
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,7 +39,6 @@ import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
 @Composable
 fun Statistics(
     navController: NavController,
-    viewModel: StatisticsViewModel = viewModel()
 ){
 
     ModalNavigationDrawer(drawerContent = { /*TODO*/ }) {
@@ -55,9 +56,9 @@ fun Statistics(
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                MonthHeadline(monthName = viewModel.currentMonth + " " + viewModel.currentYear.toString())
-                StatisticsBarGraph(viewModel.expenseInfo)
-                StatisticsPieChart(viewModel.categoryMonthTotalList)
+                MonthHeadline(monthName = "August" + " " + "2021")
+                StatisticsBarGraph(ExpenseInfo(1005, 500))
+                StatisticsPieChart(emptyList())
             }
         }
 
@@ -70,7 +71,7 @@ fun Statistics(
 @Preview
 @Composable
 fun StatisticsToShowPreview() {
-    Statistics(navController = rememberNavController(), viewModel = viewModel())
+    Statistics(navController = rememberNavController())
 }
 
 @Composable
@@ -127,14 +128,15 @@ fun StatisticsPieChart(expensesByCategoryData: Collection<CategoryMonthTotal>) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val aContext = LocalContext.current
         PieChart(
             modifier = Modifier
                 .padding(vertical = 20.dp)
                 .size(220.dp),
             data = pieChartData,
-            /**onSliceClick = { pieData ->
-            Toast.makeText(context, "${pieData.label}", Toast.LENGTH_SHORT).show()
-            }**/
+            onSliceClick = { pieData ->
+            Toast.makeText(aContext, "${pieData.label}", Toast.LENGTH_SHORT).show()
+            }
         )
     }
 }
