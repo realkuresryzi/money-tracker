@@ -1,8 +1,8 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics
 
 data class StatisticsState(
-    val expenseInfo: ExpenseInfo = ExpenseInfo(0, 0),
-    val categoryMonthTotal: Collection<CategoryMonthTotal> = emptyList<CategoryMonthTotal>()
+    val balance: BalanceInfo = BalanceInfo(0, 0),
+    val totalForCategoriesForMonth: Collection<TotalForCategoryForMonth> = emptyList<TotalForCategoryForMonth>()
 ) {
 
 

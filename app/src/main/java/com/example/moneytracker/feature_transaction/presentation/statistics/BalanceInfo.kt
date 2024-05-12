@@ -1,6 +1,6 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics
 
-class ExpenseInfo(
+class BalanceInfo(
     val income: Int,
     val expense: Int,
 ){

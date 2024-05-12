@@ -23,25 +23,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
-import com.example.moneytracker.feature_transaction.presentation.statistics.CategoryMonthTotal
-import com.example.moneytracker.feature_transaction.presentation.statistics.ExpenseInfo
+import com.example.moneytracker.feature_transaction.presentation.statistics.TotalForCategoryForMonth
+import com.example.moneytracker.feature_transaction.presentation.statistics.BalanceInfo
 import com.example.moneytracker.feature_transaction.presentation.statistics.StatisticsViewModel
 import com.example.moneytracker.ui.theme.Purple40
-import com.jaikeerthick.composable_graphs.composables.bar.BarGraph
-import com.jaikeerthick.composable_graphs.composables.bar.model.BarData
 import com.jaikeerthick.composable_graphs.composables.pie.PieChart
 import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
+
 
 @Composable
 fun Statistics(
     navController: NavController,
+    viewModel: StatisticsViewModel = hiltViewModel()
 ){
 
-    ModalNavigationDrawer(drawerContent = { /*TODO*/ }) {
+    ModalNavigationDrawer(drawerContent = { }) {
         Scaffold(
             bottomBar = {
                 BottomBar(
@@ -56,9 +56,9 @@ fun Statistics(
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                MonthHeadline(monthName = "August" + " " + "2021")
-                StatisticsBarGraph(ExpenseInfo(1005, 500))
-                StatisticsPieChart(emptyList())
+                MonthHeadline(monthName = viewModel.currentMonth + " " + viewModel.currentYear)
+                StatisticsBarGraph(viewModel.balanceInfo)
+                StatisticsPieChart(viewModel.totalForCategoriesForMonth)
             }
         }
 
@@ -87,24 +87,24 @@ fun MonthHeadline(monthName: String) {
 
 
 @Composable
-fun StatisticsBarGraph(expenseInfo: ExpenseInfo) {
+fun StatisticsBarGraph(balanceInfo: BalanceInfo) {
     Box {
         Card(
-            modifier = Modifier.border(3.dp, Color.Black)
+            modifier = Modifier.border(3.dp, Color.Black).padding(20.dp),
         )
         {
             Row(Modifier.padding(20.dp)) {
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Expenses", fontSize = 15.sp)
-                    Text(text = expenseInfo.expense.toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.expense.toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Income", fontSize = 15.sp)
-                    Text(text = expenseInfo.income.toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.income.toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = "Balance", fontSize = 15.sp)
-                    Text(text = expenseInfo.getBalance().toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.getBalance().toString(), fontSize = 25.sp)
                 }
 
             }
@@ -115,7 +115,7 @@ fun StatisticsBarGraph(expenseInfo: ExpenseInfo) {
 }
 
 @Composable
-fun StatisticsPieChart(expensesByCategoryData: Collection<CategoryMonthTotal>) {
+fun StatisticsPieChart(expensesByCategoryData: Collection<TotalForCategoryForMonth>) {
     val pieChartData = mutableListOf<PieData>()
 
     for (category in expensesByCategoryData) {
