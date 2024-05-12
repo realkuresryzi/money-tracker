@@ -54,7 +54,7 @@ fun Statistics(
             ) {
                 MonthHeadline(monthName = viewModel.getCurrentMonth() + " " + viewModel.getCurrentYear())
                 StatisticsBarGraph(viewModel.getExpenseInfo())
-                StatisticsPieChart()
+                StatisticsPieChart(viewModel.getCategoryMonthTotalList())
             }
         }
 
@@ -114,12 +114,13 @@ fun StatisticsBarGraph(expenseInfo: ExpenseInfo) {
 }
 
 @Composable
-fun StatisticsPieChart() {
-    val pieChartData = listOf(
-        PieData(value = 130F, label = "HTC", color = Color.Green),
-        PieData(value = 260F, label = "Apple", labelColor = Color.Blue),
-        PieData(value = 500F, label = "Google"),
-    )
+fun StatisticsPieChart(expensesByCategoryData: Collection<CategoryMonthTotal>) {
+    val pieChartData = mutableListOf<PieData>()
+
+    for (category in expensesByCategoryData) {
+        //todo could add color mapped by category
+        pieChartData.add(PieData(value = category.total.toFloat(), label = category.category.name))
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),

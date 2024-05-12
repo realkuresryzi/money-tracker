@@ -17,6 +17,8 @@ class StatisticsViewModel @Inject constructor(
         private var currentYear: Int = 2021
         private var expenseInfo = ExpenseInfo(3000, 2000)
 
+        private var categoryMonthTotalList = mutableListOf<CategoryMonthTotal>()
+
 
         // get data for month from database
 
@@ -31,6 +33,10 @@ class StatisticsViewModel @Inject constructor(
 
         fun getExpenseInfo(): ExpenseInfo {
                 return this.expenseInfo
+        }
+
+        fun getCategoryMonthTotalList(): List<CategoryMonthTotal> {
+                return this.categoryMonthTotalList
         }
 
 
