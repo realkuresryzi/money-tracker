@@ -33,6 +33,8 @@ import com.example.moneytracker.feature_transaction.presentation.statistics.Stat
 import com.example.moneytracker.ui.theme.Purple40
 import com.jaikeerthick.composable_graphs.composables.pie.PieChart
 import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
+import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartStyle
+import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartVisibility
 
 
 @Composable
@@ -81,16 +83,20 @@ fun MonthHeadline(monthName: String) {
         color = Purple40,
         fontSize = 50.sp,
         modifier = Modifier
-            .padding(25.dp)
+            .padding(25.dp),
     )
 }
 
 
 @Composable
 fun StatisticsBarGraph(balanceInfo: BalanceInfo) {
-    Box {
+    Box (
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
         Card(
             modifier = Modifier.border(3.dp, Color.Black).padding(20.dp),
+
         )
         {
             Row(Modifier.padding(20.dp)) {
@@ -132,8 +138,9 @@ fun StatisticsPieChart(expensesByCategoryData: Collection<TotalForCategoryForMon
         PieChart(
             modifier = Modifier
                 .padding(vertical = 20.dp)
-                .size(220.dp),
+                .size(300.dp),
             data = pieChartData,
+            style = PieChartStyle(visibility = PieChartVisibility(true, true, )),
             onSliceClick = { pieData ->
             Toast.makeText(aContext, "${pieData.label}", Toast.LENGTH_SHORT).show()
             }
