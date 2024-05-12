@@ -1,6 +1,8 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics.components
 
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,6 +39,7 @@ import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartStyle
 import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartVisibility
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Statistics(
     navController: NavController,
@@ -58,7 +61,7 @@ fun Statistics(
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                MonthHeadline(monthName = viewModel.currentMonth + " " + viewModel.currentYear)
+                MonthHeadline(monthName = viewModel.state.currentMonth + " " + viewModel.state.currentYear)
                 StatisticsBarGraph(viewModel.balanceInfo)
                 StatisticsPieChart(viewModel.totalForCategoriesForMonth)
             }

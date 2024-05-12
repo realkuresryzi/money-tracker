@@ -1,5 +1,7 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics;
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.feature_transaction.data.entity.Category
 import com.example.moneytracker.feature_transaction.domain.service.ICategoryService;
@@ -8,7 +10,9 @@ import com.example.moneytracker.feature_transaction.domain.service.ITransactionS
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import java.time.YearMonth
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
         private val transactionService: ITransactionService,
@@ -24,12 +28,13 @@ class StatisticsViewModel @Inject constructor(
                         TotalForCategoryForMonth(Category(5,"Other", 1, true, 1 ), 500)
 
                 )
-        val currentMonth: String = "January"
-        val currentYear: String = "2021"
 
         val state: StatisticsState
 
         init {
+                val currentMonth = YearMonth.now().month.name
+                val currentYear = YearMonth.now().year.toString()
+
                 state = StatisticsState(balanceInfo, totalForCategoriesForMonth, currentMonth, currentYear)
         }
 }
