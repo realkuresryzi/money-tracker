@@ -55,7 +55,7 @@ fun Transactions(
     val scope = rememberCoroutineScope()
     val a = state.categories.size
     val b = state.transactions.size
-    val hehe = a * 100 + b
+    val hehe = b * 100 + a
 
     val totalBalance = state.transactions
         .map { it.amount }
