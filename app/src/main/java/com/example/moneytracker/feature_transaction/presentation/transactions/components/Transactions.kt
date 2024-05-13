@@ -27,11 +27,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -51,6 +53,13 @@ fun Transactions(
     val state = viewModel.state.value
     val scaffoldState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
+    val a = state.categories.size
+    val b = state.transactions.size
+    val hehe = a * 100 + b
+
+    val totalBalance = state.transactions
+        .map { it.amount }
+        .reduceOrNull { acc, amount -> acc + amount } ?: 0.0
 
     Scaffold(
         floatingActionButton = {
@@ -58,7 +67,9 @@ fun Transactions(
                 onClick = {
                     navController.navigate(Screen.AddEditTransaction.route)
                 },
-                Modifier.background(MaterialTheme.colorScheme.primary)
+                Modifier
+                    .background(Color.Transparent)
+                    .padding(bottom = 95.dp)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
@@ -74,7 +85,7 @@ fun Transactions(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Header(balance = 18000, modifier = Modifier.fillMaxWidth())
+                Header(balance = hehe, modifier = Modifier.fillMaxWidth())
                 IconButton(
                     onClick = {
                         viewModel.onEvent(TransactionsEvent.ToggleFilterBar)

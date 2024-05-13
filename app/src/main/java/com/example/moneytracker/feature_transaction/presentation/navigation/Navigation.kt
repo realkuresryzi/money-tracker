@@ -1,5 +1,7 @@
 package com.example.moneytracker.feature_transaction.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,6 +12,7 @@ import com.example.moneytracker.feature_transaction.presentation.add_edit_transa
 import com.example.moneytracker.feature_transaction.presentation.statistics.components.Statistics
 import com.example.moneytracker.feature_transaction.presentation.transactions.components.Transactions
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation() {
     val navController = rememberNavController()

@@ -44,8 +44,17 @@ interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaction(transaction: Transaction)
 
+    suspend fun insertAll(transactions: List<Transaction>) {
+        for (transaction in transactions) {
+            insertTransaction(transaction)
+        }
+    }
+
     @Delete
     suspend fun deleteTransaction(transaction: Transaction)
+
+    @Query("DELETE FROM `Transaction`")
+    suspend fun deleteAllTransactions()
 
     @Query(
         """select * from `transaction`

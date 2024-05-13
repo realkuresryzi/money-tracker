@@ -35,7 +35,7 @@ fun Header(balance: Number, modifier: Modifier) {
                 .padding(start = 30.dp)
         )
         Text(
-            text = balance.toString(),
+            text = balance.toString() + " €",
             color = Purple40,
             fontSize = 50.sp,
             fontWeight = FontWeight.Bold,
