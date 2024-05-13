@@ -20,16 +20,16 @@ class DatabaseSeeder @Inject constructor(
             Category(
                 id = 1,
                 name = "Food",
-                color = Color.BLACK,
+                color = Color.RED,
                 isExpense = true,
-                iconResourceId = 1
+                iconResourceId = R.drawable.food_fork_drink
             ),
             Category(
                 id = 2,
                 name = "Transport",
                 color = Color.BLUE,
                 isExpense = true,
-                iconResourceId = 1
+                iconResourceId = R.drawable.train_car
             ),
         )
         roomDb.categoryDao.insertAll(categories)
