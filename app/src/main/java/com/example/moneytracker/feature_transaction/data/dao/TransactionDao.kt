@@ -46,4 +46,46 @@ interface TransactionDao {
 
     @Delete
     suspend fun deleteTransaction(transaction: Transaction)
+
+    @Query(
+        """select * from `transaction`
+            inner join category on `transaction`.categoryId = category.id
+            where (:isExpenseFilter is null or category.isExpense = :isExpenseFilter)
+            and (:categoryFilter is null or category.id = :categoryFilter)
+            and strftime('%m', `transaction`.createdAt) = :month
+            and strftime('%Y', `transaction`.createdAt) = :year
+        """
+    )
+    suspend fun getTransactionsByMonth(
+        isExpenseFilter: Boolean? = null,
+        categoryFilter: Int? = null,
+        month: Int,
+        year: Int
+    ): List<Transaction>
+
+    @Query(
+        """select sum(amount) from `transaction`
+            inner join category on `transaction`.categoryId = category.id
+            where category.isExpense = 1
+            and strftime('%m', `transaction`.createdAt) = :month
+            and strftime('%Y', `transaction`.createdAt) = :year
+        """
+    )
+    suspend fun getTotalExpenseByMonth(
+        month: Int,
+        year: Int
+    ): Double
+
+    @Query(
+        """select sum(amount) from `transaction`
+            inner join category on `transaction`.categoryId = category.id
+            where category.isExpense = 0
+            and strftime('%m', `transaction`.createdAt) = :month
+            and strftime('%Y', `transaction`.createdAt) = :year
+        """
+    )
+    suspend fun getTotalIncomeByMonth(
+        month: Int,
+        year: Int
+    ): Double
 }

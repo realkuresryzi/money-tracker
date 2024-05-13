@@ -16,4 +16,8 @@ interface ITransactionService {
     suspend fun getTransaction(id: Int): TransactionModel
     suspend fun insertTransaction(transaction: TransactionModel)
     suspend fun deleteTransaction(transaction: TransactionModel)
+
+    suspend fun getTotalIncomesByMonth(month: Int, year: Int): Double
+
+    suspend fun getTotalExpensesByMonth(month: Int, year: Int): Double
 }
