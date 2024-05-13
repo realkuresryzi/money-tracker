@@ -4,13 +4,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.feature_transaction.data.entity.Category
-import com.example.moneytracker.feature_transaction.domain.service.ICategoryService;
-import com.example.moneytracker.feature_transaction.domain.service.ITransactionService;
-
-import javax.inject.Inject;
-
-import dagger.hilt.android.lifecycle.HiltViewModel;
+import com.example.moneytracker.feature_transaction.domain.service.ICategoryService
+import com.example.moneytracker.feature_transaction.domain.service.ITransactionService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.YearMonth
+import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
@@ -29,15 +27,30 @@ class StatisticsViewModel @Inject constructor(
 
                 )
 
-        val state: StatisticsState
+        var state: StatisticsState = StatisticsState(balanceInfo, totalForCategoriesForMonth, "January", "2022")
 
         init {
-                val currentMonth = YearMonth.now().month.name
-                val currentYear = YearMonth.now().year.toString()
+                val currentMonth = YearMonth.now().month
+                val currentYear = YearMonth.now().year
 
-                val balanceInfo = balanceInfo
+                // todo enable init with these calls to database
+//                viewModelScope.launch {
+//                        var ctModel: CategoryModel = CategoryModel(1, "Food", Color.Red, true, 1)
+//                        categoryService.insertCategory(ctModel)
+//                        var date: Date = Date(2024, 1, 1)
+//                        transactionService.insertTransaction(TransactionModel(2, "transaction", 100.0, ctModel, date))
+//
+//                        val totalExpensesByLastMonth = transactionService.getTotalExpensesByMonth(1, 2024)
+//                        val totalIncomeByLastMonth = transactionService.getTotalIncomesByMonth(1, 2024)
+//
+//                        val balanceInfoInput = BalanceInfo(totalIncomeByLastMonth, totalExpensesByLastMonth)
+//                        state.balance = balanceInfoInput
+//                }
+                //todo make call for totalForCategoriesForMonth
 
 
-                state = StatisticsState(balanceInfo, totalForCategoriesForMonth, currentMonth, currentYear)
+
+
+                state = StatisticsState(balanceInfo, totalForCategoriesForMonth, currentMonth.name, currentYear.toString())
         }
 }
