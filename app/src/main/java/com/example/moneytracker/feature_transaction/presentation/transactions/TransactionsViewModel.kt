@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moneytracker.feature_transaction.domain.model.TransactionModel
+import com.example.moneytracker.feature_transaction.domain.model.TransactionViewModel
 import com.example.moneytracker.feature_transaction.domain.service.ICategoryService
 import com.example.moneytracker.feature_transaction.domain.service.ITransactionService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,12 +19,18 @@ class TransactionsViewModel @Inject constructor(
     private val _state = mutableStateOf(TransactionsState())
     val state: State<TransactionsState> = _state
 
-    private var recentlyDeleted: TransactionModel? = null
+    private var recentlyDeleted: TransactionViewModel? = null
 
     init {
         viewModelScope.launch {
             _state.value = state.value.copy(
-                categories = categoryService.getCategories()
+                categories = categoryService.getCategories(),
+                transactions = transactionService.getTransactions(
+                    state.value.isExpenseFilter,
+                    state.value.categoryFilter,
+                    state.value.transactionOrder,
+                    state.value.orderType
+                )
             )
         }
     }
@@ -34,23 +40,27 @@ class TransactionsViewModel @Inject constructor(
             is TransactionsEvent.Filter -> {
                 if (state.value.transactionOrder == event.transactionOrder
                     && state.value.orderType == event.orderType
-                    && state.value.isExpenseFilter == event.isExpenseFiler
-                    && state.value.categoryFilter == event.categoryFilter
+                    && state.value.isExpenseFilter == event.isExpenseFilter
                 ) {
                     return
                 }
+                val categoryFilter =
+                    if (_state.value.categoryFilter != null
+                        && _state.value.categoryFilter == event.categoryFilter
+                    ) null
+                    else event.categoryFilter
                 viewModelScope.launch {
                     _state.value = state.value.copy(
-                        transactions = transactionService.getTransactions(
-                            state.value.isExpenseFilter,
-                            state.value.categoryFilter,
-                            state.value.transactionOrder,
-                            state.value.orderType
-                        ),
-                        isExpenseFilter = event.isExpenseFiler,
-                        categoryFilter = event.categoryFilter,
+                        isExpenseFilter = event.isExpenseFilter,
+                        categoryFilter = categoryFilter,
                         transactionOrder = event.transactionOrder,
                         orderType = event.orderType,
+                        transactions = transactionService.getTransactions(
+                            event.isExpenseFilter,
+                            categoryFilter,
+                            event.transactionOrder,
+                            event.orderType
+                        ),
                     )
                 }
             }

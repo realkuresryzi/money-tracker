@@ -2,6 +2,7 @@ package com.example.moneytracker.feature_transaction.data.repository.implementat
 
 import com.example.moneytracker.feature_transaction.data.dao.TransactionDao
 import com.example.moneytracker.feature_transaction.data.entity.Transaction
+import com.example.moneytracker.feature_transaction.data.entity.TransactionWithCategory
 import com.example.moneytracker.feature_transaction.data.repository.EntityNotFoundException
 import com.example.moneytracker.feature_transaction.data.repository.ITransactionRepository
 
@@ -13,12 +14,12 @@ class TransactionRepository(
         categoryFilter: Int?,
         order: String,
         orderAsc: Boolean
-    ): List<Transaction> {
+    ): List<TransactionWithCategory> {
         return dao.getTransactions(isExpenseFilter, categoryFilter, order, orderAsc)
     }
 
     @Throws(EntityNotFoundException::class)
-    override suspend fun getTransactionById(id: Int): Transaction {
+    override suspend fun getTransactionById(id: Int): TransactionWithCategory {
         return dao.getTransactionById(id)
             ?: throw EntityNotFoundException("Could not find transaction with id $id")
     }

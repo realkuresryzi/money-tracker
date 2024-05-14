@@ -1,7 +1,7 @@
 package com.example.moneytracker.feature_transaction.presentation.transactions
 
-import com.example.moneytracker.feature_transaction.domain.model.CategoryModel
-import com.example.moneytracker.feature_transaction.domain.model.TransactionModel
+import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
+import com.example.moneytracker.feature_transaction.domain.model.TransactionViewModel
 import com.example.moneytracker.feature_transaction.domain.util.OrderType
 import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
 
@@ -9,12 +9,12 @@ sealed class TransactionsEvent {
     data class Filter(
         val transactionOrder: TransactionOrder,
         val orderType: OrderType,
-        val isExpenseFiler: Boolean? = null,
-        val categoryFilter: CategoryModel? = null
+        val isExpenseFilter: Boolean? = null,
+        val categoryFilter: CategoryViewModel? = null
     ) : TransactionsEvent()
 
     data class Delete(
-        val transaction: TransactionModel
+        val transaction: TransactionViewModel
     ) : TransactionsEvent()
 
     data object Restore : TransactionsEvent()

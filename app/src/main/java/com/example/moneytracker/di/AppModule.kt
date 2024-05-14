@@ -4,16 +4,20 @@ import android.app.Application
 import androidx.room.Room
 import com.example.moneytracker.feature_transaction.data.entity.Category
 import com.example.moneytracker.feature_transaction.data.entity.Transaction
-import com.example.moneytracker.feature_transaction.data.repository.implementation.CategoryRepository
-import com.example.moneytracker.feature_transaction.data.repository.implementation.TransactionRepository
-import com.example.moneytracker.feature_transaction.data.storage.RoomDb
+import com.example.moneytracker.feature_transaction.data.entity.TransactionWithCategory
 import com.example.moneytracker.feature_transaction.data.repository.ICategoryRepository
 import com.example.moneytracker.feature_transaction.data.repository.ITransactionRepository
-import com.example.moneytracker.feature_transaction.domain.mapper.CategoryMapper
-import com.example.moneytracker.feature_transaction.domain.mapper.EntityMapper
-import com.example.moneytracker.feature_transaction.domain.mapper.TransactionMapper
-import com.example.moneytracker.feature_transaction.domain.model.CategoryModel
-import com.example.moneytracker.feature_transaction.domain.model.TransactionModel
+import com.example.moneytracker.feature_transaction.data.repository.implementation.CategoryRepository
+import com.example.moneytracker.feature_transaction.data.repository.implementation.TransactionRepository
+import com.example.moneytracker.feature_transaction.data.storage.MIGRATION_1_2
+import com.example.moneytracker.feature_transaction.data.storage.RoomDb
+import com.example.moneytracker.feature_transaction.domain.mapper.CategoryEntityToModelMapper
+import com.example.moneytracker.feature_transaction.domain.mapper.CategoryModelToEntityMapper
+import com.example.moneytracker.feature_transaction.domain.mapper.Mapper
+import com.example.moneytracker.feature_transaction.domain.mapper.TransactionEntityToModelMapper
+import com.example.moneytracker.feature_transaction.domain.mapper.TransactionModelToEntityMapper
+import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
+import com.example.moneytracker.feature_transaction.domain.model.TransactionViewModel
 import com.example.moneytracker.feature_transaction.domain.service.ICategoryService
 import com.example.moneytracker.feature_transaction.domain.service.ITransactionService
 import com.example.moneytracker.feature_transaction.domain.service.implementation.CategoryService
@@ -34,7 +38,9 @@ object AppModule {
             app,
             RoomDb::class.java,
             RoomDb.DATABASE_NAME
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 
     @Provides
@@ -51,34 +57,47 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCategoryMapper(): EntityMapper<Category, CategoryModel> {
-        return CategoryMapper()
+    fun provideCategoryEntityToModelMapper(): Mapper<Category, CategoryViewModel> {
+        return CategoryEntityToModelMapper()
     }
 
     @Provides
     @Singleton
-    fun provideTransactionMapper(
-        repository: ICategoryRepository,
-        mapper: EntityMapper<Category, CategoryModel>
-    ): EntityMapper<Transaction, TransactionModel> {
-        return TransactionMapper(repository, mapper)
+    fun provideCategoryModelToEntityMapper(): Mapper<CategoryViewModel, Category> {
+        return CategoryModelToEntityMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTransactionModelToEntityMapper(): Mapper<TransactionViewModel, Transaction> {
+        return TransactionModelToEntityMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTransactionEntityToModelMapper(
+        mapper: Mapper<Category, CategoryViewModel>
+    ): Mapper<TransactionWithCategory, TransactionViewModel> {
+        return TransactionEntityToModelMapper(mapper)
     }
 
     @Provides
     @Singleton
     fun provideCategoryService(
         repository: ICategoryRepository,
-        mapper: EntityMapper<Category, CategoryModel>
+        entityToModelMapper: Mapper<Category, CategoryViewModel>,
+        modelToEntityMapper: Mapper<CategoryViewModel, Category>
     ): ICategoryService {
-        return CategoryService(repository, mapper)
+        return CategoryService(repository, entityToModelMapper, modelToEntityMapper)
     }
 
     @Provides
     @Singleton
     fun provideTransactionService(
         repository: ITransactionRepository,
-        mapper: EntityMapper<Transaction, TransactionModel>
+        transactionWithCategoryMapper: Mapper<TransactionWithCategory, TransactionViewModel>,
+        transactionMapper: Mapper<TransactionViewModel, Transaction>
     ): ITransactionService {
-        return TransactionService(repository, mapper)
+        return TransactionService(repository, transactionWithCategoryMapper, transactionMapper)
     }
 }

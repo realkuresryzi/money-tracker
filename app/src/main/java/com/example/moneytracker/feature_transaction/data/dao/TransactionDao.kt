@@ -6,13 +6,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.moneytracker.feature_transaction.data.entity.Transaction
+import com.example.moneytracker.feature_transaction.data.entity.TransactionWithCategory
 import com.example.moneytracker.feature_transaction.domain.util.Constants
 
 @Dao
 interface TransactionDao {
     @Query(
         """select * from `transaction`
-            where (:isExpenseFilter is null or (SELECT isExpense FROM category WHERE category.id = `transaction`.categoryId) = :isExpenseFilter)
+            left join category on `transaction`.categoryId = category.id
+            where (:isExpenseFilter is null or  category.isExpense = :isExpenseFilter)
             and (:categoryFilter is null or `transaction`.categoryId = :categoryFilter)
             order by
                 case when :orderAsc = 1 then
@@ -36,19 +38,21 @@ interface TransactionDao {
         categoryFilter: Int? = null,
         order: String = Constants.DATE,
         orderAsc: Boolean = true
-    ): List<Transaction>
+    ): List<TransactionWithCategory>
 
-    @Query("select * from `transaction` where id = :id")
-    suspend fun getTransactionById(id: Int): Transaction?
+    @Query(
+        """select * from `transaction` 
+            inner join category on `transaction`.categoryId = category.id 
+            where `transaction`.id = :id
+        """
+    )
+    suspend fun getTransactionById(id: Int): TransactionWithCategory?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaction(transaction: Transaction)
 
-    suspend fun insertAll(transactions: List<Transaction>) {
-        for (transaction in transactions) {
-            insertTransaction(transaction)
-        }
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(transactions: List<Transaction>)
 
     @Delete
     suspend fun deleteTransaction(transaction: Transaction)

@@ -1,46 +1,46 @@
 package com.example.moneytracker.feature_transaction.domain.service.implementation
 
 import com.example.moneytracker.feature_transaction.data.entity.Transaction
+import com.example.moneytracker.feature_transaction.data.entity.TransactionWithCategory
 import com.example.moneytracker.feature_transaction.data.repository.ITransactionRepository
-import com.example.moneytracker.feature_transaction.domain.mapper.EntityMapper
-import com.example.moneytracker.feature_transaction.domain.model.CategoryModel
-import com.example.moneytracker.feature_transaction.domain.model.TransactionModel
+import com.example.moneytracker.feature_transaction.domain.mapper.Mapper
+import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
+import com.example.moneytracker.feature_transaction.domain.model.TransactionViewModel
 import com.example.moneytracker.feature_transaction.domain.service.ITransactionService
 import com.example.moneytracker.feature_transaction.domain.util.OrderType
 import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
 
 class TransactionService(
     private val repository: ITransactionRepository,
-    private val transactionMapper: EntityMapper<Transaction, TransactionModel>
+    private val transactionWithCategoryMapper: Mapper<TransactionWithCategory, TransactionViewModel>,
+    private val transactionMapper: Mapper<TransactionViewModel, Transaction>
 ) : ITransactionService {
     override suspend fun getTransactions(
         isExpenseFilter: Boolean?,
-        categoryFilter: CategoryModel?,
+        categoryFilter: CategoryViewModel?,
         order: TransactionOrder,
         orderType: OrderType
-    ): List<TransactionModel> {
+    ): List<TransactionViewModel> {
         return repository.getTransactions(
             isExpenseFilter,
             categoryFilter?.id,
             order.columnName,
             orderType == OrderType.ASC
         ).map { transaction ->
-            transactionMapper.entityToModel(transaction)
+            transactionWithCategoryMapper.map(transaction)
         }
     }
 
-    override suspend fun getTransaction(id: Int): TransactionModel {
-        return transactionMapper.entityToModel(repository.getTransactionById(id))
+    override suspend fun getTransaction(id: Int): TransactionViewModel {
+        return transactionWithCategoryMapper.map(repository.getTransactionById(id))
     }
 
-    // TODO add annotaion Throws
-    override suspend fun insertTransaction(transaction: TransactionModel) {
-        // TODO validation, also create invalid transaction exception in services package
-        repository.insertTransaction(transactionMapper.modelToEntity(transaction))
+    override suspend fun insertTransaction(transaction: TransactionViewModel) {
+        repository.insertTransaction(transactionMapper.map(transaction))
     }
 
-    override suspend fun deleteTransaction(transaction: TransactionModel) {
-        repository.deleteTransaction(transactionMapper.modelToEntity(transaction))
+    override suspend fun deleteTransaction(transaction: TransactionViewModel) {
+        repository.deleteTransaction(transactionMapper.map(transaction))
     }
 
     override suspend fun getTotalIncomesByMonth(month: Int, year: Int): Double {

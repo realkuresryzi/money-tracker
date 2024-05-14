@@ -15,15 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -74,10 +74,10 @@ fun AddEditTransaction(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { viewModel.onEvent(AddEditTransactionEvent.Save) },
-                Modifier.background(MaterialTheme.colorScheme.primary)
+                Modifier.background(Color.Transparent)
             ) {
                 Icon(
-                    imageVector = Icons.Default.CheckCircle,
+                    imageVector = Icons.Default.Done,
                     contentDescription = Constants.SAVE
                 )
             }
@@ -88,11 +88,11 @@ fun AddEditTransaction(
                 .padding(padding) //16.dp
                 .fillMaxSize()
         ) {
-            Label(text = Constants.EXPENSE)
+            Label(text = Constants.EXPENSE, Modifier.padding(15.dp))
             LazyRow {
                 items(expenseCategories) { category ->
                     CategoryChip(
-                        categoryModel = category,
+                        categoryViewModel = category,
                         isSelected = category == selectedCategory,
                         onCategorySelected = {
                             viewModel.onEvent(
@@ -106,11 +106,11 @@ fun AddEditTransaction(
             }
             Spacer(modifier = Modifier.height(15.dp))
 
-            Label(text = Constants.INCOME)
+            Label(text = Constants.INCOME, modifier = Modifier.padding(15.dp))
             LazyRow {
                 items(incomeCategories) { category ->
                     CategoryChip(
-                        categoryModel = category,
+                        categoryViewModel = category,
                         isSelected = category == selectedCategory,
                         onCategorySelected = {
                             viewModel.onEvent(
@@ -135,7 +135,8 @@ fun AddEditTransaction(
                 value = title.text,
                 onValueChange = { viewModel.onEvent(AddEditTransactionEvent.EnteredTitle(it)) },
                 label = Constants.TITLE,
-                placeholder = Constants.TEXT_INPUT_PLACEHOLDER
+                placeholder = Constants.TEXT_INPUT_PLACEHOLDER,
+                modifier = Modifier.padding(horizontal = 15.dp)
             )
             Spacer(modifier = Modifier.height(15.dp))
 
@@ -143,7 +144,8 @@ fun AddEditTransaction(
                 value = amount.text,
                 onValueChange = { viewModel.onEvent(AddEditTransactionEvent.EnteredAmount(it)) },
                 label = Constants.AMOUNT,
-                placeholder = Constants.NUMERIC_INPUT_PLACEHOLDER
+                placeholder = Constants.NUMERIC_INPUT_PLACEHOLDER,
+                modifier = Modifier.padding(horizontal = 15.dp)
             )
             Spacer(modifier = Modifier.height(15.dp))
 
@@ -151,7 +153,8 @@ fun AddEditTransaction(
                 Modifier.fillMaxWidth()
             ) {
                 ImageUploader(
-                    onImageSelected = { viewModel.onEvent(AddEditTransactionEvent.UploadImage(it)) }
+                    onImageSelected = { viewModel.onEvent(AddEditTransactionEvent.UploadImage(it)) },
+                    modifier = Modifier.padding(horizontal = 15.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 imageUri?.let { uri ->

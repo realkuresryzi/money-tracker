@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,16 +23,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.moneytracker.feature_transaction.domain.model.CategoryModel
+import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
 
 @Composable
 fun CategoryChip(
-    categoryModel: CategoryModel,
+    categoryViewModel: CategoryViewModel,
     isSelected: Boolean,
-    onCategorySelected: () -> Unit
+    onCategorySelected: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(80.dp)
             .clickable { onCategorySelected() }
     ) {
@@ -46,11 +48,11 @@ fun CategoryChip(
                 modifier = Modifier
                     .size(56.dp)
                     .clip(CircleShape)
-                    .background(categoryModel.color)
+                    .background(categoryViewModel.color)
                     .padding(8.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(categoryModel.iconResourceId),
+                    imageVector = ImageVector.vectorResource(categoryViewModel.iconResourceId),
                     contentDescription = "category",
                     modifier = Modifier
                         .size(40.dp)
@@ -60,9 +62,10 @@ fun CategoryChip(
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = categoryModel.name,
+                text = categoryViewModel.name,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(horizontal = 4.dp)
+                maxLines = 1,
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }

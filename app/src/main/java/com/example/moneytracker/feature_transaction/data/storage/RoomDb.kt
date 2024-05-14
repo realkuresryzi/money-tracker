@@ -11,7 +11,7 @@ import com.example.moneytracker.feature_transaction.data.util.Converters
 
 @Database(
     entities = [Category::class, Transaction::class],
-    version = 1
+    version = 2
 )
 @TypeConverters(Converters::class)
 abstract class RoomDb : RoomDatabase() {

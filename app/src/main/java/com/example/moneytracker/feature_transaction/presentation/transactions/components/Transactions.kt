@@ -24,10 +24,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -81,11 +79,13 @@ fun Transactions(
                 .padding(innerPadding)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Header(balance = hehe, modifier = Modifier.fillMaxWidth())
+//                Header(balance = hehe, modifier = Modifier.fillMaxWidth())
                 IconButton(
                     onClick = {
                         viewModel.onEvent(TransactionsEvent.ToggleFilterBar)
@@ -105,7 +105,7 @@ fun Transactions(
                 FilterBar(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp),
+                        .padding(horizontal = 10.dp),
                     transactionOrder = state.transactionOrder,
                     orderType = state.orderType,
                     isExpenseFilter = state.isExpenseFilter,
@@ -116,11 +116,11 @@ fun Transactions(
                     }
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxSize()
+                    .padding(horizontal = 20.dp)
             ) {
                 items(state.transactions) { transaction ->
                     TransactionItem(

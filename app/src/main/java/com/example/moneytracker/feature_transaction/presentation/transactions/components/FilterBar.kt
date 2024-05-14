@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.moneytracker.feature_transaction.domain.model.CategoryModel
+import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
 import com.example.moneytracker.feature_transaction.domain.util.Constants
 import com.example.moneytracker.feature_transaction.domain.util.OrderType
 import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
@@ -21,16 +22,14 @@ import com.example.moneytracker.feature_transaction.presentation.shared.input.Cu
 @Composable
 fun FilterBar(
     modifier: Modifier,
-    categories: List<CategoryModel>,
+    categories: List<CategoryViewModel>,
     transactionOrder: TransactionOrder = TransactionOrder.DATE,
     orderType: OrderType = OrderType.DESC,
     isExpenseFilter: Boolean? = null,
-    categoryFilter: CategoryModel? = null,
-    onFilterChange: (TransactionOrder, OrderType, Boolean?, CategoryModel?) -> Unit
+    categoryFilter: CategoryViewModel? = null,
+    onFilterChange: (TransactionOrder, OrderType, Boolean?, CategoryViewModel?) -> Unit
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    Column {
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -73,7 +72,7 @@ fun FilterBar(
                 }
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -103,7 +102,7 @@ fun FilterBar(
                 }
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -125,10 +124,11 @@ fun FilterBar(
                 onSelect = { onFilterChange(transactionOrder, orderType, true, categoryFilter) }
             )
         }
+        Spacer(modifier = Modifier.height(8.dp))
         LazyRow {
             items(categories) { category ->
                 CategoryChip(
-                    categoryModel = category,
+                    categoryViewModel = category,
                     isSelected = category == categoryFilter,
                     onCategorySelected = {
                         onFilterChange(
@@ -137,9 +137,11 @@ fun FilterBar(
                             isExpenseFilter,
                             category
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(start = 4.dp)
                 )
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

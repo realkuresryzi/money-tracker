@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moneytracker.feature_transaction.domain.model.CategoryModel
-import com.example.moneytracker.feature_transaction.domain.model.TransactionModel
+import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
+import com.example.moneytracker.feature_transaction.domain.model.TransactionViewModel
 import com.example.moneytracker.feature_transaction.domain.service.ICategoryService
 import com.example.moneytracker.feature_transaction.domain.service.ITransactionService
 import com.example.moneytracker.feature_transaction.domain.util.Constants
@@ -15,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,8 +37,8 @@ class AddEditTransactionViewModel @Inject constructor(
     )
     val amount: State<InputFieldState> = _amount
 
-    private val _category = mutableStateOf<CategoryModel?>(null)
-    val category: State<CategoryModel?> = _category
+    private val _category = mutableStateOf<CategoryViewModel?>(null)
+    val category: State<CategoryViewModel?> = _category
 
     private val _imageUri = mutableStateOf<Uri?>(null)
     val imageUri: State<Uri?> = _imageUri
@@ -47,11 +46,11 @@ class AddEditTransactionViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _incomeCategories = mutableStateOf<List<CategoryModel>>(emptyList())
-    val incomeCategories: State<List<CategoryModel>> = _incomeCategories
+    private val _incomeCategories = mutableStateOf<List<CategoryViewModel>>(emptyList())
+    val incomeCategories: State<List<CategoryViewModel>> = _incomeCategories
 
-    private val _expenseCategories = mutableStateOf<List<CategoryModel>>(emptyList())
-    val expenseCategories: State<List<CategoryModel>> = _expenseCategories
+    private val _expenseCategories = mutableStateOf<List<CategoryViewModel>>(emptyList())
+    val expenseCategories: State<List<CategoryViewModel>> = _expenseCategories
 
     private var currentId: Int? = null
 
@@ -76,8 +75,10 @@ class AddEditTransactionViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            _incomeCategories.value = categoryService.getCategories(isExpenseFilter = false)
             _expenseCategories.value = categoryService.getCategories(isExpenseFilter = true)
+        }
+        viewModelScope.launch {
+            _incomeCategories.value = categoryService.getCategories(isExpenseFilter = false)
         }
     }
 
@@ -89,10 +90,10 @@ class AddEditTransactionViewModel @Inject constructor(
                 )
             }
 
-            is AddEditTransactionEvent.ChangeTitleFocus -> {
-                _title.value = title.value.copy(
-                    isHintVisible = !event.focusState.isFocused && title.value.text.isBlank()
-                )
+            is AddEditTransactionEvent.ShowTitleErrorMessage -> {
+//                _title.value = title.value.copy(
+//                    isHintVisible = !event.message.isFocused && title.value.text.isBlank()
+//                )
             }
             // todo change it to number
             is AddEditTransactionEvent.EnteredAmount -> {
@@ -101,14 +102,18 @@ class AddEditTransactionViewModel @Inject constructor(
                 )
             }
 
-            is AddEditTransactionEvent.ChangeAmountFocus -> {
-                _amount.value = amount.value.copy(
-                    isHintVisible = !event.focusState.isFocused && amount.value.text.isBlank()
-                )
+            is AddEditTransactionEvent.ShowAmountErrorMessage -> {
+//                _amount.value = amount.value.copy(
+//                    isHintVisible = !event.message.isFocused && amount.value.text.isBlank()
+//                )
             }
 
             is AddEditTransactionEvent.SelectCategory -> {
-                _category.value = event.category
+                if (_category.value == event.category) {
+                    _category.value = null
+                } else {
+                    _category.value = event.category
+                }
             }
 
             is AddEditTransactionEvent.UploadImage -> {
@@ -117,20 +122,23 @@ class AddEditTransactionViewModel @Inject constructor(
 
             is AddEditTransactionEvent.Save -> {
                 viewModelScope.launch {
+                    if (category.value == null) {
+                        return@launch
+                    }
                     transactionService.insertTransaction(
-                        TransactionModel(
+                        TransactionViewModel(
                             title = title.value.text,
                             amount = amount.value.text.toDouble(),
-                            category = category.value ?: _incomeCategories.value[0],
+                            category = category.value!!,
                             imageUri = imageUri.value,
-                            createdAt = Date(),
-                            id = 1
+                            // date and id generated by db
+                            date = "",
+                            id = -1
                         )
                     )
                     _eventFlow.emit(UiEvent.SaveTransaction)
                 }
             }
-
         }
     }
 

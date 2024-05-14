@@ -8,7 +8,7 @@ import com.example.moneytracker.ui.theme.Purple80
 import com.example.moneytracker.ui.theme.PurpleGrey40
 import com.example.moneytracker.ui.theme.PurpleGrey80
 
-data class CategoryModel(
+data class CategoryViewModel(
     val id: Int,
     val name: String,
     val color: Color,
