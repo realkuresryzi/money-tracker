@@ -9,7 +9,7 @@ class CategoryRepository(
     private val dao: CategoryDao
 ) : ICategoryRepository {
     override suspend fun getCategories(isExpenseFilter: Boolean?): List<Category> {
-        return dao.getCategories()
+        return dao.getCategories(isExpenseFilter)
     }
 
     @Throws(EntityNotFoundException::class)

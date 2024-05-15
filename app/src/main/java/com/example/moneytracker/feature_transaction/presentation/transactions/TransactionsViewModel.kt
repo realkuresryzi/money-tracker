@@ -45,9 +45,7 @@ class TransactionsViewModel @Inject constructor(
                     return
                 }
                 val categoryFilter =
-                    if (_state.value.categoryFilter != null
-                        && _state.value.categoryFilter == event.categoryFilter
-                    ) null
+                    if (_state.value.categoryFilter == event.categoryFilter) null
                     else event.categoryFilter
                 viewModelScope.launch {
                     _state.value = state.value.copy(
@@ -61,6 +59,7 @@ class TransactionsViewModel @Inject constructor(
                             event.transactionOrder,
                             event.orderType
                         ),
+                        categories = categoryService.getCategories(event.isExpenseFilter)
                     )
                 }
             }
