@@ -1,11 +1,11 @@
 package com.example.moneytracker.feature_transaction.presentation.transactions.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -31,7 +31,7 @@ fun FilterBar(
 ) {
     Column {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
             CustomRadioButton(
                 text = TransactionOrder.DATE.columnName,
@@ -74,7 +74,7 @@ fun FilterBar(
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
             CustomRadioButton(
                 text = OrderType.ASC.text,
@@ -104,7 +104,7 @@ fun FilterBar(
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
             CustomRadioButton(
                 text = Constants.ALL,
@@ -125,7 +125,7 @@ fun FilterBar(
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-        LazyRow {
+        LazyRow(contentPadding = PaddingValues(start = 10.dp)) {
             items(categories) { category ->
                 CategoryChip(
                     categoryViewModel = category,
@@ -138,7 +138,6 @@ fun FilterBar(
                             category
                         )
                     },
-                    modifier = Modifier.padding(start = 4.dp)
                 )
             }
         }

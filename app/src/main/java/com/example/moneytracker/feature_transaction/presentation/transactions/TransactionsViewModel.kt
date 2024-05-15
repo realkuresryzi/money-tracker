@@ -23,14 +23,18 @@ class TransactionsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            val transactions = transactionService.getTransactions(
+                state.value.isExpenseFilter,
+                state.value.categoryFilter,
+                state.value.transactionOrder,
+                state.value.orderType
+            )
             _state.value = state.value.copy(
                 categories = categoryService.getCategories(),
-                transactions = transactionService.getTransactions(
-                    state.value.isExpenseFilter,
-                    state.value.categoryFilter,
-                    state.value.transactionOrder,
-                    state.value.orderType
-                )
+                transactions = transactions,
+                balance = transactions
+                    .map { it.amount }
+                    .reduceOrNull { acc, amount -> acc + amount } ?: 0.0
             )
         }
     }
@@ -38,12 +42,13 @@ class TransactionsViewModel @Inject constructor(
     fun onEvent(event: TransactionsEvent) {
         when (event) {
             is TransactionsEvent.Filter -> {
-                if (state.value.transactionOrder == event.transactionOrder
-                    && state.value.orderType == event.orderType
-                    && state.value.isExpenseFilter == event.isExpenseFilter
-                ) {
-                    return
-                }
+//                if (state.value.transactionOrder == event.transactionOrder
+//                    && state.value.orderType == event.orderType
+//                    && state.value.isExpenseFilter == event.isExpenseFilter
+//                    && state.value.categoryFilter == event.categoryFilter
+//                ) {
+//                    return
+//                }
                 val categoryFilter =
                     if (_state.value.categoryFilter == event.categoryFilter) null
                     else event.categoryFilter
@@ -67,6 +72,9 @@ class TransactionsViewModel @Inject constructor(
             is TransactionsEvent.Delete -> {
                 viewModelScope.launch {
                     transactionService.deleteTransaction(event.transaction)
+                    _state.value = state.value.copy(
+                        transactions = state.value.transactions.filter { it != event.transaction }
+                    )
                     recentlyDeleted = event.transaction
                 }
             }
@@ -74,6 +82,14 @@ class TransactionsViewModel @Inject constructor(
             is TransactionsEvent.Restore -> {
                 viewModelScope.launch {
                     transactionService.insertTransaction(recentlyDeleted ?: return@launch)
+                    _state.value = state.value.copy(
+                        transactions = transactionService.getTransactions(
+                            state.value.isExpenseFilter,
+                            state.value.categoryFilter,
+                            state.value.transactionOrder,
+                            state.value.orderType
+                        )
+                    )
                     recentlyDeleted = null
                 }
             }

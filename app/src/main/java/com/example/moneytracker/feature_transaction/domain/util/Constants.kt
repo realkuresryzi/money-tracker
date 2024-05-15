@@ -14,4 +14,5 @@ object Constants {
     const val TEXT_INPUT_PLACEHOLDER = "Enter text"
     const val NUMERIC_INPUT_PLACEHOLDER = "Enter number"
     const val SAVE = "Save"
+    const val BALANCE = "Balance"
 }

@@ -12,5 +12,7 @@ data class TransactionsState(
     val isExpenseFilter: Boolean? = null,
     val transactionOrder: TransactionOrder = TransactionOrder.DATE,
     val orderType: OrderType = OrderType.DESC,
-    val isFilterBarVisible: Boolean = false
+    val isFilterBarVisible: Boolean = false,
+    val balance: Double = 0.0,
+    val isFABVisible: Boolean = true
 )

@@ -12,8 +12,8 @@ import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
 
 class TransactionService(
     private val repository: ITransactionRepository,
-    private val transactionWithCategoryMapper: Mapper<TransactionWithCategory, TransactionViewModel>,
-    private val transactionMapper: Mapper<TransactionViewModel, Transaction>
+    private val entityToModelMapper: Mapper<TransactionWithCategory, TransactionViewModel>,
+    private val modelToEntityMapper: Mapper<TransactionViewModel, Transaction>
 ) : ITransactionService {
     override suspend fun getTransactions(
         isExpenseFilter: Boolean?,
@@ -27,20 +27,20 @@ class TransactionService(
             order.columnName,
             orderType == OrderType.ASC
         ).map { transaction ->
-            transactionWithCategoryMapper.map(transaction)
+            entityToModelMapper.map(transaction)
         }
     }
 
     override suspend fun getTransaction(id: Int): TransactionViewModel {
-        return transactionWithCategoryMapper.map(repository.getTransactionById(id))
+        return entityToModelMapper.map(repository.getTransactionById(id))
     }
 
     override suspend fun insertTransaction(transaction: TransactionViewModel) {
-        repository.insertTransaction(transactionMapper.map(transaction))
+        repository.insertTransaction(modelToEntityMapper.map(transaction))
     }
 
     override suspend fun deleteTransaction(transaction: TransactionViewModel) {
-        repository.deleteTransaction(transactionMapper.map(transaction))
+        repository.deleteTransaction(modelToEntityMapper.map(transaction))
     }
 
     override suspend fun getTotalIncomesByMonth(month: Int, year: Int): Double {

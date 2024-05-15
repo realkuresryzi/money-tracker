@@ -164,6 +164,7 @@ fun AddEditTransaction(
                             modifier = Modifier
                                 .heightIn(max = 100.dp)
                                 .weight(1f)
+                                .padding(end = 10.dp)
                         ) {
                             Image(
                                 bitmap = bitmap,

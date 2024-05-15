@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,14 +21,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,28 +41,27 @@ import androidx.navigation.NavController
 import com.example.moneytracker.feature_transaction.domain.util.Constants
 import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
 import com.example.moneytracker.feature_transaction.presentation.navigation.Screen
+import com.example.moneytracker.feature_transaction.presentation.shared.text.Headline
 import com.example.moneytracker.feature_transaction.presentation.transactions.TransactionsEvent
 import com.example.moneytracker.feature_transaction.presentation.transactions.TransactionsViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Transactions(
     navController: NavController,
     viewModel: TransactionsViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    val scaffoldState = rememberBottomSheetScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    val a = state.categories.size
-    val b = state.transactions.size
-    val hehe = b * 100 + a
 
-    val totalBalance = state.transactions
-        .map { it.amount }
-        .reduceOrNull { acc, amount -> acc + amount } ?: 0.0
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -82,10 +84,10 @@ fun Transactions(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp),
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-//                Header(balance = hehe, modifier = Modifier.fillMaxWidth())
+                Headline(text = "${Constants.BALANCE}: ${state.balance}")
                 IconButton(
                     onClick = {
                         viewModel.onEvent(TransactionsEvent.ToggleFilterBar)
@@ -120,7 +122,8 @@ fun Transactions(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxSize()
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 20.dp),
+                contentPadding = PaddingValues(bottom = 60.dp)
             ) {
                 items(state.transactions) { transaction ->
                     TransactionItem(
@@ -134,9 +137,10 @@ fun Transactions(
                         onDeleteClick = {
                             viewModel.onEvent(TransactionsEvent.Delete(transaction))
                             scope.launch {
-                                val result = scaffoldState.snackbarHostState.showSnackbar(
+                                val result = snackbarHostState.showSnackbar(
                                     message = Constants.TRANSACTION_DELETED,
-                                    actionLabel = Constants.UNDO
+                                    actionLabel = Constants.UNDO,
+                                    duration = SnackbarDuration.Short
                                 )
                                 if (result == SnackbarResult.ActionPerformed) {
                                     viewModel.onEvent(TransactionsEvent.Restore)
