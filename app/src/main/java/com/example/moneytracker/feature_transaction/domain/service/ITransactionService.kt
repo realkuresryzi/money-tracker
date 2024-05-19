@@ -4,14 +4,15 @@ import com.example.moneytracker.feature_transaction.domain.model.CategoryViewMod
 import com.example.moneytracker.feature_transaction.domain.model.TransactionViewModel
 import com.example.moneytracker.feature_transaction.domain.util.OrderType
 import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
+import kotlinx.coroutines.flow.Flow
 
 interface ITransactionService {
-    suspend fun getTransactions(
+    fun getTransactions(
         isExpenseFilter: Boolean? = null,
         categoryFilter: CategoryViewModel? = null,
         order: TransactionOrder = TransactionOrder.DATE,
         orderType: OrderType = OrderType.ASC
-    ): List<TransactionViewModel>
+    ): Flow<List<TransactionViewModel>>
 
     suspend fun getTransaction(id: Int): TransactionViewModel
     suspend fun insertTransaction(transaction: TransactionViewModel)

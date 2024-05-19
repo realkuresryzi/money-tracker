@@ -11,9 +11,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
-import com.example.moneytracker.feature_transaction.domain.util.Constants
 import com.example.moneytracker.feature_transaction.domain.util.OrderType
 import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
 import com.example.moneytracker.feature_transaction.presentation.shared.input.CategoryChip
@@ -34,7 +35,7 @@ fun FilterBar(
             modifier = modifier.fillMaxWidth()
         ) {
             CustomRadioButton(
-                text = TransactionOrder.DATE.columnName,
+                text = stringResource(TransactionOrder.DATE.resourceStringId),
                 selected = transactionOrder == TransactionOrder.DATE,
                 onSelect = {
                     onFilterChange(
@@ -47,7 +48,7 @@ fun FilterBar(
             )
             Spacer(modifier = Modifier.width(8.dp))
             CustomRadioButton(
-                text = TransactionOrder.TITLE.columnName,
+                text = stringResource(TransactionOrder.TITLE.resourceStringId),
                 selected = transactionOrder == TransactionOrder.TITLE,
                 onSelect = {
                     onFilterChange(
@@ -60,7 +61,7 @@ fun FilterBar(
             )
             Spacer(modifier = Modifier.width(8.dp))
             CustomRadioButton(
-                text = TransactionOrder.AMOUNT.columnName,
+                text = stringResource(TransactionOrder.AMOUNT.resourceStringId),
                 selected = transactionOrder == TransactionOrder.AMOUNT,
                 onSelect = {
                     onFilterChange(
@@ -77,7 +78,7 @@ fun FilterBar(
             modifier = modifier.fillMaxWidth()
         ) {
             CustomRadioButton(
-                text = OrderType.ASC.text,
+                text = stringResource(OrderType.ASC.resourceStringId),
                 selected = orderType == OrderType.ASC,
                 onSelect = {
                     onFilterChange(
@@ -90,7 +91,7 @@ fun FilterBar(
             )
             Spacer(modifier = Modifier.width(8.dp))
             CustomRadioButton(
-                text = OrderType.DESC.text,
+                text = stringResource(OrderType.DESC.resourceStringId),
                 selected = orderType == OrderType.DESC,
                 onSelect = {
                     onFilterChange(
@@ -107,19 +108,19 @@ fun FilterBar(
             modifier = modifier.fillMaxWidth()
         ) {
             CustomRadioButton(
-                text = Constants.ALL,
+                text = stringResource(R.string.all),
                 selected = isExpenseFilter == null,
                 onSelect = { onFilterChange(transactionOrder, orderType, null, categoryFilter) }
             )
             Spacer(modifier = Modifier.width(8.dp))
             CustomRadioButton(
-                text = Constants.INCOME,
+                text = stringResource(R.string.income),
                 selected = isExpenseFilter == false,
                 onSelect = { onFilterChange(transactionOrder, orderType, false, categoryFilter) }
             )
             Spacer(modifier = Modifier.width(8.dp))
             CustomRadioButton(
-                text = Constants.EXPENSE,
+                text = stringResource(R.string.expense),
                 selected = isExpenseFilter == true,
                 onSelect = { onFilterChange(transactionOrder, orderType, true, categoryFilter) }
             )

@@ -92,112 +92,110 @@ class DatabaseSeeder @Inject constructor(
         )
         roomDb.categoryDao.insertAll(categories)
 
-        val incomeCategories = roomDb.categoryDao.getCategories(isExpenseFilter = false)
-        val expenseCategories = roomDb.categoryDao.getCategories(isExpenseFilter = true)
         val transactions = listOf(
             Transaction(
                 id = 0,
                 title = "Grocery Shopping",
                 amount = -50.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusDays(Random.nextLong(1, 30))
             ),
             Transaction(
                 id = 0,
                 title = "Bus Ticket",
                 amount = -2.5,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusMonths(Random.nextLong(1, 12))
             ),
             Transaction(
                 id = 0,
                 title = "Electric Bill",
                 amount = -30.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusYears(Random.nextLong(1, 5))
             ),
             Transaction(
                 id = 0,
                 title = "Movie Night",
                 amount = -12.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusDays(Random.nextLong(1, 30))
             ),
             Transaction(
                 id = 0,
                 title = "Doctor's Visit",
                 amount = -100.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusMonths(Random.nextLong(1, 12))
             ),
             Transaction(
                 id = 0,
                 title = "Textbooks",
                 amount = -60.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusYears(Random.nextLong(1, 5))
             ),
             Transaction(
                 id = 0,
                 title = "Birthday Gift",
                 amount = -25.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusDays(Random.nextLong(1, 30))
             ),
             Transaction(
                 id = 0,
                 title = "Monthly Salary",
                 amount = 3000.0,
-                categoryId = incomeCategories[Random.nextInt(0, incomeCategories.size)].id,
+                categoryId = categories[Random.nextInt(7, 10)].id,
                 createdAt = LocalDateTime.now().minusMonths(Random.nextLong(1, 12))
             ),
             Transaction(
                 id = 0,
                 title = "Freelance Project",
                 amount = 800.0,
-                categoryId = incomeCategories[Random.nextInt(0, incomeCategories.size)].id,
+                categoryId = categories[Random.nextInt(7, 10)].id,
                 createdAt = LocalDateTime.now().minusYears(Random.nextLong(1, 5))
             ),
             Transaction(
                 id = 0,
                 title = "Stock Dividend",
                 amount = 150.0,
-                categoryId = incomeCategories[Random.nextInt(0, incomeCategories.size)].id,
+                categoryId = categories[Random.nextInt(7, 10)].id,
                 createdAt = LocalDateTime.now().minusDays(Random.nextLong(1, 30))
             ),
             Transaction(
                 id = 0,
                 title = "Dinner",
                 amount = -40.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusMonths(Random.nextLong(1, 12))
             ),
             Transaction(
                 id = 0,
                 title = "Taxi Fare",
                 amount = -20.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusYears(Random.nextLong(1, 5))
             ),
             Transaction(
                 id = 0,
                 title = "Internet Bill",
                 amount = -45.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusDays(Random.nextLong(1, 30))
             ),
             Transaction(
                 id = 0,
                 title = "Concert Ticket",
                 amount = -80.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusMonths(Random.nextLong(1, 12))
             ),
             Transaction(
                 id = 0,
                 title = "Medicine",
                 amount = -15.0,
-                categoryId = expenseCategories[Random.nextInt(0, expenseCategories.size)].id,
+                categoryId = categories[Random.nextInt(0, 7)].id,
                 createdAt = LocalDateTime.now().minusYears(Random.nextLong(1, 5))
             )
         )

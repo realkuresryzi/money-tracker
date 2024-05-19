@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -51,20 +52,21 @@ fun AddEditCategory(
             .padding(16.dp)
             .fillMaxWidth()
     ) {
-        Headline(text = "Add category")
+        Headline(text = stringResource(R.string.add_category))
         Spacer(modifier = Modifier.height(15.dp))
+        // TODO use custom input field from shared folder
         TextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text(text = "Name") },
-            placeholder = { Text(text = "Enter name") },
+            label = { Text(text = stringResource(R.string.name)) },
+            placeholder = { Text(text = stringResource(R.string.name_input_placeholder)) },
             modifier = Modifier
                 .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(35.dp))
 
-        Label(text = "Icon")
+        Label(text = stringResource(R.string.icon))
         Spacer(modifier = Modifier.height(5.dp))
         Box(
             modifier = Modifier
@@ -75,7 +77,7 @@ fun AddEditCategory(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.blur_radial),
-                contentDescription = "category",
+                contentDescription = stringResource(R.string.category),
                 modifier = Modifier
                     .size(40.dp)
                     .padding(4.dp),
@@ -95,9 +97,10 @@ fun AddEditCategory(
                     isIncome = isChecked
                 }
             )
-            Text(text = "Is this an income category?")
+            Text(text = stringResource(R.string.is_income_category))
         }
 
+        // TODO add resource string for color
         //Label(text = "Color")
         // TODO color picker
 
@@ -113,7 +116,7 @@ fun AddEditCategory(
                 },
                 modifier = Modifier.padding(end = 8.dp)
             ) {
-                Text(text = "Clear")
+                Text(text = stringResource(R.string.clear))
             }
             Button(
                 onClick = {
@@ -126,7 +129,7 @@ fun AddEditCategory(
                     navController.navigate(Screen.Categories.route)
                 }
             ) {
-                Text(text = "Add")
+                Text(text = stringResource(R.string.add))
             }
         }
     }

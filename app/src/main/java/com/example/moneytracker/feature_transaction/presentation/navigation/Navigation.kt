@@ -14,7 +14,6 @@ import com.example.moneytracker.feature_transaction.presentation.categories.comp
 import com.example.moneytracker.feature_transaction.presentation.statistics.components.Statistics
 import com.example.moneytracker.feature_transaction.presentation.transactions.components.Transactions
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
@@ -38,18 +37,14 @@ fun Navigation() {
         ) {
             AddEditTransaction(navController = navController)
         }
-        composable(route = Screen.AddEditCategory.route) {
-            AddEditCategory(navController = navController)
-        }
-        // TODO uncomment when implemented
-        composable(route = Screen.Transactions.route) {
-            Transactions(navController = navController)
+        composable(route = Screen.Statistics.route) {
+            Statistics(navController = navController)
         }
         composable(route = Screen.Categories.route) {
             Categories(navController = navController)
         }
-        composable(route = Screen.Statistics.route) {
-            Statistics(navController = navController)
+        composable(route = Screen.AddEditCategory.route) {
+            AddEditCategory(navController = navController)
         }
     }
 }

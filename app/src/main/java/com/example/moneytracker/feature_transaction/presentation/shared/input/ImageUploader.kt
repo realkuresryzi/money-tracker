@@ -3,6 +3,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -10,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.example.moneytracker.R
 
 @Composable
 fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier) {
@@ -23,7 +26,10 @@ fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier)
         onClick = { activityResultLauncher.launch("image/*") },
         modifier = modifier
     ) {
-        Text("Select Image")
+        Text(
+            text = stringResource(R.string.select_image),
+            style = MaterialTheme.typography.labelLarge
+        )
     }
 }
 

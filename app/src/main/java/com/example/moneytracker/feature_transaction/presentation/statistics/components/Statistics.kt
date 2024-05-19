@@ -1,8 +1,6 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics.components
 
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,29 +20,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
-import com.example.moneytracker.feature_transaction.presentation.statistics.TotalForCategoryForMonth
 import com.example.moneytracker.feature_transaction.presentation.statistics.BalanceInfo
 import com.example.moneytracker.feature_transaction.presentation.statistics.StatisticsViewModel
+import com.example.moneytracker.feature_transaction.presentation.statistics.TotalForCategoryForMonth
+import com.example.moneytracker.feature_transaction.presentation.util.getNominativeMonth
 import com.example.moneytracker.ui.theme.Purple40
 import com.jaikeerthick.composable_graphs.composables.pie.PieChart
 import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
 import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartStyle
 import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartVisibility
+import java.time.format.DateTimeFormatter
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+// TODO add date picker
+// TODO split to multiple files so each has its own component
+
 @Composable
 fun Statistics(
     navController: NavController,
     viewModel: StatisticsViewModel = hiltViewModel()
-){
+) {
+    val locale = LocalContext.current.resources.configuration.locales[0]
+    val monthFormatter = DateTimeFormatter.ofPattern("MMMM", locale)
 
     ModalNavigationDrawer(drawerContent = { }) {
         Scaffold(
@@ -61,7 +67,17 @@ fun Statistics(
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                MonthHeadline(monthName = viewModel.state.currentMonth + " " + viewModel.state.currentYear)
+                MonthHeadline(
+                    // TODO this will probably change, when date picker is implemented
+                    // i would display the selected date range (e.g. 12.02.2007 - 30.8.2007)
+                    monthName = getNominativeMonth(
+                        viewModel.state.currentDateTime.format(
+                            monthFormatter
+                        ), locale
+                    )
+                            + " "
+                            + viewModel.state.currentDateTime.year.toString()
+                )
                 StatisticsBarGraph(viewModel.balanceInfo)
                 StatisticsPieChart(viewModel.totalForCategoriesForMonth)
             }
@@ -92,34 +108,33 @@ fun MonthHeadline(monthName: String) {
 
 @Composable
 fun StatisticsBarGraph(balanceInfo: BalanceInfo) {
-    Box (
+    Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Card(
-            modifier = Modifier.border(3.dp, Color.Black).padding(20.dp),
-
-        )
-        {
+            modifier = Modifier
+                .border(3.dp, Color.Black)
+                .padding(20.dp)
+        ) {
             Row(Modifier.padding(20.dp)) {
                 Column(Modifier.padding(20.dp)) {
-                    Text(text = "Expenses", fontSize = 15.sp)
+                    // TODO use some text composable from shared folder to have unified style
+                    // or create your own text composable if current ones are not sufficient (use MaterialTheme.typography for style)
+                    Text(text = stringResource(R.string.expense), fontSize = 15.sp)
                     Text(text = balanceInfo.expense.toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
-                    Text(text = "Income", fontSize = 15.sp)
+                    Text(text = stringResource(R.string.income), fontSize = 15.sp)
                     Text(text = balanceInfo.income.toString(), fontSize = 25.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
-                    Text(text = "Balance", fontSize = 15.sp)
+                    Text(text = stringResource(R.string.balance), fontSize = 15.sp)
                     Text(text = balanceInfo.getBalance().toString(), fontSize = 25.sp)
                 }
-
             }
         }
-
     }
-
 }
 
 @Composable
@@ -142,9 +157,14 @@ fun StatisticsPieChart(expensesByCategoryData: Collection<TotalForCategoryForMon
                 .padding(vertical = 20.dp)
                 .size(300.dp),
             data = pieChartData,
-            style = PieChartStyle(visibility = PieChartVisibility(true, true, )),
+            style = PieChartStyle(
+                visibility = PieChartVisibility(
+                    isLabelVisible = true,
+                    isPercentageVisible = true
+                )
+            ),
             onSliceClick = { pieData ->
-            Toast.makeText(aContext, "${pieData.label}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(aContext, "${pieData.label}", Toast.LENGTH_SHORT).show()
             }
         )
     }

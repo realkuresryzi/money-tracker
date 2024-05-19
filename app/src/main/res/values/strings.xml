@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">Money Tracker</string>
+    <string name="app_name" translatable="false">Money Tracker</string>
+    <string name="balance">Balance</string>
+    <string name="all">All</string>
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="transaction_deleted">Transaction deleted</string>
+    <string name="undo">Undo</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
+    <string name="clear">Clear</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="click_a_category">Click a category to edit…</string>
+    <string name="select_image">Select image</string>
+    <string name="required_field">Field is required</string>
+    <string name="invalid_format">Invalid format</string>
+    <string name="transactions">Transactions</string>
+    <string name="statistics">Statistics</string>
+    <string name="categories">Categories</string>
+    <string name="category">Category</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
+    <string name="amount">Amount</string>
+    <string name="name">Name</string>
+    <string name="icon">Icon</string>
+    <string name="image">Image</string>
+    <string name="filters">Filters</string>
+    <string name="add_category">Add category</string>
+    <string name="title_input_placeholder">Enter title</string>
+    <string name="amount_input_placeholder">Enter amount</string>
+    <string name="name_input_placeholder">Enter name</string>
+    <string name="is_income_category">Is this an income category?</string>
 </resources>

@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 )
 data class Transaction(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 1,
+    val id: Int,
     val title: String,
     val amount: Double,
     val categoryId: Int,

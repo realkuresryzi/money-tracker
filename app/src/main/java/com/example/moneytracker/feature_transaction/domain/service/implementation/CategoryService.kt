@@ -5,16 +5,20 @@ import com.example.moneytracker.feature_transaction.data.repository.ICategoryRep
 import com.example.moneytracker.feature_transaction.domain.mapper.Mapper
 import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
 import com.example.moneytracker.feature_transaction.domain.service.ICategoryService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class CategoryService(
     private val repository: ICategoryRepository,
     private val categoryEntityToModelMapper: Mapper<Category, CategoryViewModel>,
     private val categoryToModelToEntityMapper: Mapper<CategoryViewModel, Category>
 ) : ICategoryService {
-    override suspend fun getCategories(isExpenseFilter: Boolean?): List<CategoryViewModel> {
-        val categories = repository.getCategories(isExpenseFilter)
-        val categoryModels = categories.map { category ->
-            categoryEntityToModelMapper.map(category)
+    override fun getCategories(isExpenseFilter: Boolean?): Flow<List<CategoryViewModel>> {
+        val categoriesList = repository.getCategories(isExpenseFilter)
+        val categoryModels = categoriesList.map { categories ->
+            categories.map { category ->
+                categoryEntityToModelMapper.map(category)
+            }
         }
         return categoryModels
     }

@@ -1,6 +1,8 @@
 package com.example.moneytracker.feature_transaction.domain.util
 
-enum class OrderType(val text: String) {
-    ASC(Constants.ASC),
-    DESC(Constants.DESC),
+import com.example.moneytracker.R
+
+enum class OrderType(val resourceStringId: Int) {
+    ASC(R.string.ascending),
+    DESC(R.string.descending),
 }

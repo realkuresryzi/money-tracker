@@ -35,10 +35,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.moneytracker.feature_transaction.domain.util.Constants
+import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
 import com.example.moneytracker.feature_transaction.presentation.navigation.Screen
 import com.example.moneytracker.feature_transaction.presentation.shared.text.Headline
@@ -55,6 +56,8 @@ fun Transactions(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    val undoString = stringResource(R.string.undo)
+    val deletedString = stringResource(R.string.transaction_deleted)
 
     Scaffold(
         snackbarHost = {
@@ -65,13 +68,16 @@ fun Transactions(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(Screen.AddEditTransaction.route)
+                    navController.navigate(Screen.AddEditTransaction.route + "?id=0")
                 },
                 Modifier
                     .background(Color.Transparent)
                     .padding(bottom = 95.dp)
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add)
+                )
             }
         },
     ) { innerPadding ->
@@ -87,7 +93,7 @@ fun Transactions(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Headline(text = "${Constants.BALANCE}: ${state.balance}")
+                Headline(text = "${stringResource(R.string.balance)}: ${state.balance}")
                 IconButton(
                     onClick = {
                         viewModel.onEvent(TransactionsEvent.ToggleFilterBar)
@@ -95,7 +101,7 @@ fun Transactions(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Menu,
-                        contentDescription = "Filters"
+                        contentDescription = stringResource(R.string.filters)
                     )
                 }
             }
@@ -138,8 +144,8 @@ fun Transactions(
                             viewModel.onEvent(TransactionsEvent.Delete(transaction))
                             scope.launch {
                                 val result = snackbarHostState.showSnackbar(
-                                    message = Constants.TRANSACTION_DELETED,
-                                    actionLabel = Constants.UNDO,
+                                    message = deletedString,
+                                    actionLabel = undoString,
                                     duration = SnackbarDuration.Short
                                 )
                                 if (result == SnackbarResult.ActionPerformed) {

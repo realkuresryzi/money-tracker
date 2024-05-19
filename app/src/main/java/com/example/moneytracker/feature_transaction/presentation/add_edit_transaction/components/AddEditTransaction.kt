@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -25,10 +24,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.moneytracker.feature_transaction.domain.util.Constants
+import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.AddEditTransactionEvent
 import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.AddEditTransactionViewModel
 import com.example.moneytracker.feature_transaction.presentation.shared.input.CategoryChip
@@ -38,7 +38,6 @@ import com.example.moneytracker.feature_transaction.presentation.shared.text.Lab
 import kotlinx.coroutines.flow.collectLatest
 import loadImage
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditTransaction(
     navController: NavController,
@@ -78,17 +77,17 @@ fun AddEditTransaction(
             ) {
                 Icon(
                     imageVector = Icons.Default.Done,
-                    contentDescription = Constants.SAVE
+                    contentDescription = stringResource(R.string.save)
                 )
             }
         }
     ) { padding ->
         Column(
             modifier = Modifier
-                .padding(padding) //16.dp
+                .padding(padding)
                 .fillMaxSize()
         ) {
-            Label(text = Constants.EXPENSE, Modifier.padding(15.dp))
+            Label(text = stringResource(R.string.expense), Modifier.padding(15.dp))
             LazyRow {
                 items(expenseCategories) { category ->
                     CategoryChip(
@@ -106,7 +105,7 @@ fun AddEditTransaction(
             }
             Spacer(modifier = Modifier.height(15.dp))
 
-            Label(text = Constants.INCOME, modifier = Modifier.padding(15.dp))
+            Label(text = stringResource(R.string.income), modifier = Modifier.padding(15.dp))
             LazyRow {
                 items(incomeCategories) { category ->
                     CategoryChip(
@@ -121,21 +120,14 @@ fun AddEditTransaction(
                         }
                     )
                 }
-//                items(incomeCategories) { category ->
-//                    CategoryChip(
-//                        categoryModel = category,
-//                        isSelected = (category == selectedCategory),
-//                        onCategorySelected = { viewModel.onEvent(AddEditTransactionEvent.SelectCategory(it)) }
-//                    )
-//                }
             }
             Spacer(modifier = Modifier.height(15.dp))
 
             CustomInputField(
                 value = title.text,
                 onValueChange = { viewModel.onEvent(AddEditTransactionEvent.EnteredTitle(it)) },
-                label = Constants.TITLE,
-                placeholder = Constants.TEXT_INPUT_PLACEHOLDER,
+                label = stringResource(R.string.title),
+                placeholder = stringResource(R.string.title_input_placeholder),
                 modifier = Modifier.padding(horizontal = 15.dp)
             )
             Spacer(modifier = Modifier.height(15.dp))
@@ -143,12 +135,11 @@ fun AddEditTransaction(
             NumericInputField(
                 value = amount.text,
                 onValueChange = { viewModel.onEvent(AddEditTransactionEvent.EnteredAmount(it)) },
-                label = Constants.AMOUNT,
-                placeholder = Constants.NUMERIC_INPUT_PLACEHOLDER,
+                label = stringResource(R.string.amount),
+                placeholder = stringResource(R.string.amount_input_placeholder),
                 modifier = Modifier.padding(horizontal = 15.dp)
             )
             Spacer(modifier = Modifier.height(15.dp))
-
             Row(
                 Modifier.fillMaxWidth()
             ) {
@@ -168,7 +159,7 @@ fun AddEditTransaction(
                         ) {
                             Image(
                                 bitmap = bitmap,
-                                contentDescription = "Uploaded Image",
+                                contentDescription = stringResource(R.string.image),
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxSize()
                             )

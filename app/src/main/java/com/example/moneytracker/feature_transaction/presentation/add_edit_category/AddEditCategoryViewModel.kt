@@ -9,11 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
 import com.example.moneytracker.feature_transaction.domain.service.ICategoryService
-import com.example.moneytracker.feature_transaction.domain.util.Constants
 import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.InputFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,11 +24,7 @@ class AddEditCategoryViewModel @Inject constructor(
     private val categoryService: ICategoryService,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _name = mutableStateOf(
-        InputFieldState(
-            hint = Constants.TEXT_INPUT_PLACEHOLDER
-        )
-    )
+    private val _name = mutableStateOf(InputFieldState())
     val name: State<InputFieldState> = _name
 
 //    private val _isExpense = mutableStateOf<CategoryViewModel?>(null)
@@ -42,6 +40,8 @@ class AddEditCategoryViewModel @Inject constructor(
     val expenseCategories: State<List<CategoryViewModel>> = _expenseCategories
 
     private var currentId: Int? = null
+    private var getIncomeCategoriesJob: Job? = null
+    private var getExpenseCategoriesJob: Job? = null
 
     init {
         savedStateHandle.get<Int>("id")?.let { id ->
@@ -57,12 +57,8 @@ class AddEditCategoryViewModel @Inject constructor(
                 }
             }
         }
-        viewModelScope.launch {
-            _expenseCategories.value = categoryService.getCategories(isExpenseFilter = true)
-        }
-        viewModelScope.launch {
-            _incomeCategories.value = categoryService.getCategories(isExpenseFilter = false)
-        }
+        getIncomeCategories()
+        getExpenseCategories()
     }
 
     fun onEvent(event: AddEditCategoryEvent) {
@@ -89,6 +85,28 @@ class AddEditCategoryViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun getIncomeCategories() {
+        getIncomeCategoriesJob?.cancel()
+        getIncomeCategoriesJob = categoryService.getCategories(
+            isExpenseFilter = false,
+        )
+            .onEach { categories ->
+                _incomeCategories.value = categories
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun getExpenseCategories() {
+        getExpenseCategoriesJob?.cancel()
+        getExpenseCategoriesJob = categoryService.getCategories(
+            isExpenseFilter = true,
+        )
+            .onEach { categories ->
+                _expenseCategories.value = categories
+            }
+            .launchIn(viewModelScope)
     }
 
     sealed class UiEvent {

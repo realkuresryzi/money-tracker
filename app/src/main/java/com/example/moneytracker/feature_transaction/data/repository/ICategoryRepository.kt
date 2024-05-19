@@ -1,9 +1,10 @@
 package com.example.moneytracker.feature_transaction.data.repository
 
 import com.example.moneytracker.feature_transaction.data.entity.Category
+import kotlinx.coroutines.flow.Flow
 
 interface ICategoryRepository {
-    suspend fun getCategories(isExpenseFilter: Boolean? = null): List<Category>
+    fun getCategories(isExpenseFilter: Boolean? = null): Flow<List<Category>>
 
     @Throws(EntityNotFoundException::class)
     suspend fun getCategoryById(id: Int): Category

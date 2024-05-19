@@ -16,9 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.domain.model.TransactionViewModel
 
 @Composable
@@ -38,22 +40,14 @@ fun TransactionItem(
             tint = item.category.color,
             modifier = Modifier.padding(end = 10.dp)
         )
-        val formattedAmount = if (item.amount % 1 == 0.0) item.amount.toInt().toString()
-        else item.amount.toString()
-        Text(
-            text = if (item.category.isExpense) formattedAmount else "+$formattedAmount",
-//            color = if (item.category.isExpense) Color.Red else Color.Green,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .padding(end = 10.dp)
-                .width(60.dp)
-        )
-        Column {
+        Column(
+            modifier = Modifier.width(200.dp)
+        ) {
             Text(
                 text = item.title,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1
+                maxLines = 1,
+                style = MaterialTheme.typography.bodyLarge,
             )
             Text(
                 text = item.date,
@@ -63,12 +57,26 @@ fun TransactionItem(
         }
 
         Spacer(Modifier.weight(1f))
+
+        val formattedAmount = if (item.amount % 1 == 0.0) item.amount.toInt().toString()
+        else item.amount.toString()
+        Text(
+            text = if (item.category.isExpense) formattedAmount else "+$formattedAmount",
+//            color = if (item.category.isExpense) Color.Red else Color.Green,
+            style = MaterialTheme.typography.bodyLarge,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.End,
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .width(80.dp)
+        )
         IconButton(
             onClick = onDeleteClick,
         ) {
             Icon(
                 imageVector = Icons.Default.Delete,
-                contentDescription = "Delete"
+                contentDescription = stringResource(R.string.delete)
             )
         }
     }

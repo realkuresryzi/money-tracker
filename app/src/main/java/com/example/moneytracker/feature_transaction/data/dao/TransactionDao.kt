@@ -7,12 +7,20 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.moneytracker.feature_transaction.data.entity.Transaction
 import com.example.moneytracker.feature_transaction.data.entity.TransactionWithCategory
-import com.example.moneytracker.feature_transaction.domain.util.Constants
+import com.example.moneytracker.feature_transaction.data.util.Constants
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
     @Query(
-        """select * from `transaction`
+        """select 
+                `transaction`.*,
+                category.id as category_id,
+                category.name as category_name,
+                category.color as category_color,
+                category.isExpense as category_isExpense,
+                category.iconResourceId as category_iconResourceId
+            from `transaction`
             left join category on `transaction`.categoryId = category.id
             where (:isExpenseFilter is null or  category.isExpense = :isExpenseFilter)
             and (:categoryFilter is null or `transaction`.categoryId = :categoryFilter)
@@ -23,25 +31,32 @@ interface TransactionDao {
                         when '${Constants.AMOUNT}' then `transaction`.amount
                         else `transaction`.createdAt 
                     end 
-                end asc,
+                end collate nocase asc,
                 case when :orderAsc = 0 then
                     case :order
                         when '${Constants.TITLE}' then `transaction`.title
                         when '${Constants.AMOUNT}' then `transaction`.amount
                         else `transaction`.createdAt 
                     end
-                end desc
+                end collate nocase desc
         """
     )
-    suspend fun getTransactions(
+    fun getTransactions(
         isExpenseFilter: Boolean? = null,
         categoryFilter: Int? = null,
         order: String = Constants.DATE,
         orderAsc: Boolean = true
-    ): List<TransactionWithCategory>
+    ): Flow<List<TransactionWithCategory>>
 
     @Query(
-        """select * from `transaction` 
+        """select
+                `transaction`.*,
+                category.id as category_id,
+                category.name as category_name,
+                category.color as category_color,
+                category.isExpense as category_isExpense,
+                category.iconResourceId as category_iconResourceId
+            from `transaction` 
             inner join category on `transaction`.categoryId = category.id 
             where `transaction`.id = :id
         """

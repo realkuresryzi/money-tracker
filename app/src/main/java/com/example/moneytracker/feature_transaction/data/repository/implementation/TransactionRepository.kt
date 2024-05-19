@@ -5,16 +5,17 @@ import com.example.moneytracker.feature_transaction.data.entity.Transaction
 import com.example.moneytracker.feature_transaction.data.entity.TransactionWithCategory
 import com.example.moneytracker.feature_transaction.data.repository.EntityNotFoundException
 import com.example.moneytracker.feature_transaction.data.repository.ITransactionRepository
+import kotlinx.coroutines.flow.Flow
 
 class TransactionRepository(
     private val dao: TransactionDao
 ) : ITransactionRepository {
-    override suspend fun getTransactions(
+    override fun getTransactions(
         isExpenseFilter: Boolean?,
         categoryFilter: Int?,
         order: String,
         orderAsc: Boolean
-    ): List<TransactionWithCategory> {
+    ): Flow<List<TransactionWithCategory>> {
         return dao.getTransactions(isExpenseFilter, categoryFilter, order, orderAsc)
     }
 

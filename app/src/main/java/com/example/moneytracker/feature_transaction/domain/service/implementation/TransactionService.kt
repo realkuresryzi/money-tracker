@@ -9,26 +9,32 @@ import com.example.moneytracker.feature_transaction.domain.model.TransactionView
 import com.example.moneytracker.feature_transaction.domain.service.ITransactionService
 import com.example.moneytracker.feature_transaction.domain.util.OrderType
 import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class TransactionService(
     private val repository: ITransactionRepository,
     private val entityToModelMapper: Mapper<TransactionWithCategory, TransactionViewModel>,
     private val modelToEntityMapper: Mapper<TransactionViewModel, Transaction>
 ) : ITransactionService {
-    override suspend fun getTransactions(
+    override fun getTransactions(
         isExpenseFilter: Boolean?,
         categoryFilter: CategoryViewModel?,
         order: TransactionOrder,
         orderType: OrderType
-    ): List<TransactionViewModel> {
-        return repository.getTransactions(
+    ): Flow<List<TransactionViewModel>> {
+        val transactionsList = repository.getTransactions(
             isExpenseFilter,
             categoryFilter?.id,
             order.columnName,
             orderType == OrderType.ASC
-        ).map { transaction ->
-            entityToModelMapper.map(transaction)
+        )
+        val transactionModels = transactionsList.map { transactions ->
+            transactions.map { transaction ->
+                entityToModelMapper.map(transaction)
+            }
         }
+        return transactionModels
     }
 
     override suspend fun getTransaction(id: Int): TransactionViewModel {
