@@ -129,6 +129,9 @@ fun AddEditCategory(
                     navController.navigate(Screen.Categories.route)
                 }
             ) {
+                // TODO
+                // somehow find out if its add or edit
+                // also fill in default values for edit
                 Text(text = stringResource(R.string.add))
             }
         }
