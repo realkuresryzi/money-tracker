@@ -35,9 +35,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.domain.util.Constants
 import com.example.moneytracker.feature_transaction.presentation.bottom_bar.BottomBar
 import com.example.moneytracker.feature_transaction.presentation.navigation.Screen
@@ -87,14 +90,14 @@ fun Transactions(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Headline(text = "${Constants.BALANCE}: ${state.balance}")
+                Headline(text = "${Constants.BALANCE}: ${state.balance} €")
                 IconButton(
                     onClick = {
                         viewModel.onEvent(TransactionsEvent.ToggleFilterBar)
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Menu,
+                        imageVector = ImageVector.vectorResource(R.drawable.filter),
                         contentDescription = "Filters"
                     )
                 }

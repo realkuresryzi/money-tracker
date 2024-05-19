@@ -34,6 +34,7 @@ import com.example.moneytracker.feature_transaction.presentation.add_edit_transa
 import com.example.moneytracker.feature_transaction.presentation.shared.input.CategoryChip
 import com.example.moneytracker.feature_transaction.presentation.shared.input.CustomInputField
 import com.example.moneytracker.feature_transaction.presentation.shared.input.NumericInputField
+import com.example.moneytracker.feature_transaction.presentation.shared.text.Headline
 import com.example.moneytracker.feature_transaction.presentation.shared.text.Label
 import kotlinx.coroutines.flow.collectLatest
 import loadImage
@@ -88,6 +89,7 @@ fun AddEditTransaction(
                 .padding(padding) //16.dp
                 .fillMaxSize()
         ) {
+            Headline(text = "Add transaction")
             Label(text = Constants.EXPENSE, Modifier.padding(15.dp))
             LazyRow {
                 items(expenseCategories) { category ->

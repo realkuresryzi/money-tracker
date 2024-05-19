@@ -38,17 +38,6 @@ fun TransactionItem(
             tint = item.category.color,
             modifier = Modifier.padding(end = 10.dp)
         )
-        val formattedAmount = if (item.amount % 1 == 0.0) item.amount.toInt().toString()
-        else item.amount.toString()
-        Text(
-            text = if (item.category.isExpense) formattedAmount else "+$formattedAmount",
-//            color = if (item.category.isExpense) Color.Red else Color.Green,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .padding(end = 10.dp)
-                .width(60.dp)
-        )
         Column {
             Text(
                 text = item.title,
@@ -61,8 +50,19 @@ fun TransactionItem(
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
-
         Spacer(Modifier.weight(1f))
+        var formattedAmount = if (item.amount % 1 == 0.0) item.amount.toInt().toString()
+        else item.amount.toString()
+        formattedAmount += " €"
+        Text(
+            text = if (item.category.isExpense) formattedAmount else "+$formattedAmount",
+//            color = if (item.category.isExpense) Color.Red else Color.Green,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.End,
+            modifier = Modifier
+                .padding(end = 10.dp)
+                .width(60.dp)
+        )
         IconButton(
             onClick = onDeleteClick,
         ) {

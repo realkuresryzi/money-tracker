@@ -21,49 +21,49 @@ class DatabaseSeeder @Inject constructor(
             Category(
                 id = 0,
                 name = "Food",
-                color = Color.RED,
+                color = Color.rgb(44, 62, 80),
                 isExpense = true,
                 iconResourceId = R.drawable.food_fork_drink
             ),
             Category(
                 id = 0,
                 name = "Transport",
-                color = Color.BLUE,
+                color = Color.rgb(52, 73, 94),
                 isExpense = true,
                 iconResourceId = R.drawable.train_car
             ),
             Category(
                 id = 0,
                 name = "Utilities",
-                color = Color.RED,
+                color = Color.rgb(63, 81, 181),
                 isExpense = true,
                 iconResourceId = R.drawable.invoice_list
             ),
             Category(
                 id = 0,
                 name = "Entertainment",
-                color = Color.YELLOW,
+                color = Color.rgb(85, 98, 112),
                 isExpense = true,
                 iconResourceId = R.drawable.basketball
             ),
             Category(
                 id = 0,
                 name = "Healthcare",
-                color = Color.MAGENTA,
+                color = Color.rgb(72, 61, 139),
                 isExpense = true,
                 iconResourceId = R.drawable.home
             ),
             Category(
                 id = 0,
                 name = "Education",
-                color = Color.CYAN,
+                color = Color.rgb(60, 179, 113),
                 isExpense = true,
                 iconResourceId = R.drawable.shopping
             ),
             Category(
                 id = 0,
                 name = "Miscellaneous",
-                color = Color.GRAY,
+                color = Color.rgb(70, 130, 180),
                 isExpense = true,
                 iconResourceId = R.drawable.cart
             ),
@@ -71,21 +71,21 @@ class DatabaseSeeder @Inject constructor(
             Category(
                 id = 0,
                 name = "Salary",
-                color = Color.GREEN,
+                color = Color.rgb(46, 104, 83),
                 isExpense = false,
                 iconResourceId = R.drawable.chart_box
             ),
             Category(
                 id = 0,
                 name = "Freelance",
-                color = Color.LTGRAY,
+                color = Color.rgb(70, 130, 120),
                 isExpense = false,
                 iconResourceId = R.drawable.dots_horizontal_circle
             ),
             Category(
                 id = 0,
                 name = "Investments",
-                color = Color.DKGRAY,
+                color = Color.rgb(102, 51, 153),
                 isExpense = false,
                 iconResourceId = R.drawable.plus
             )
