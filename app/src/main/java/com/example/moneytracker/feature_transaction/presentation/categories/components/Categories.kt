@@ -70,7 +70,11 @@ fun Categories(
                     CategoryChip(
                         categoryViewModel = category,
                         isSelected = false,
-                        onCategorySelected = {}
+                        onCategorySelected = {
+                            navController.navigate(
+                                Screen.AddEditCategory.route + "?id=${category.id}"
+                            )
+                        }
                     )
                 }
             }
@@ -80,7 +84,11 @@ fun Categories(
                     CategoryChip(
                         categoryViewModel = category,
                         isSelected = false,
-                        onCategorySelected = {}
+                        onCategorySelected = {
+                            navController.navigate(
+                                Screen.AddEditCategory.route + "?id=${category.id}"
+                            )
+                        }
                     )
                 }
             }
