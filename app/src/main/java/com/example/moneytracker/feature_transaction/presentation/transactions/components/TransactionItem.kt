@@ -58,8 +58,9 @@ fun TransactionItem(
 
         Spacer(Modifier.weight(1f))
 
-        val formattedAmount = if (item.amount % 1 == 0.0) item.amount.toInt().toString()
+        var formattedAmount = if (item.amount % 1 == 0.0) item.amount.toInt().toString()
         else item.amount.toString()
+        formattedAmount += " €"
         Text(
             text = if (item.category.isExpense) formattedAmount else "+$formattedAmount",
 //            color = if (item.category.isExpense) Color.Red else Color.Green,

@@ -93,7 +93,7 @@ fun Transactions(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Headline(text = "${stringResource(R.string.balance)}: ${state.balance}")
+                Headline(text = "${stringResource(R.string.balance)}: ${state.balance} €")
                 IconButton(
                     onClick = {
                         viewModel.onEvent(TransactionsEvent.ToggleFilterBar)

@@ -23,9 +23,7 @@ fun BottomBarItem(
 ) {
     Button(
         onClick = onItemClick,
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-        modifier = Modifier
-            .width(120.dp)
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
