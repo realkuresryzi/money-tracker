@@ -35,7 +35,9 @@ import androidx.navigation.NavController
 import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.presentation.add_edit_category.AddEditCategoryEvent
 import com.example.moneytracker.feature_transaction.presentation.add_edit_category.AddEditCategoryViewModel
+import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.InputFieldState
 import com.example.moneytracker.feature_transaction.presentation.navigation.Screen
+import com.example.moneytracker.feature_transaction.presentation.shared.input.CustomInputField
 import com.example.moneytracker.feature_transaction.presentation.shared.text.Headline
 import com.example.moneytracker.feature_transaction.presentation.shared.text.Label
 
@@ -44,8 +46,8 @@ fun AddEditCategory(
     navController: NavController,
     viewModel: AddEditCategoryViewModel = hiltViewModel()
 ) {
-    var name by remember { mutableStateOf(TextFieldValue()) }
-    var isIncome by remember { mutableStateOf(false) }
+    var name = viewModel.name.value
+    var isIncome = false //viewModel.isIncome.value
 
     Column(
         modifier = Modifier
@@ -54,14 +56,13 @@ fun AddEditCategory(
     ) {
         Headline(text = stringResource(R.string.add_category))
         Spacer(modifier = Modifier.height(15.dp))
-        // TODO use custom input field from shared folder
-        TextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text(text = stringResource(R.string.name)) },
-            placeholder = { Text(text = stringResource(R.string.name_input_placeholder)) },
-            modifier = Modifier
-                .fillMaxWidth()
+
+        CustomInputField(
+            value = name.text,
+            onValueChange = { viewModel.onEvent(AddEditCategoryEvent.EnteredName(it)) },
+            label = stringResource(R.string.name),
+            placeholder = stringResource(R.string.name_input_placeholder),
+            modifier = Modifier.padding(horizontal = 15.dp)
         )
 
         Spacer(modifier = Modifier.height(35.dp))
@@ -112,7 +113,7 @@ fun AddEditCategory(
         ) {
             Button(
                 onClick = {
-                    name = TextFieldValue()
+                    //name = InputFieldState("")
                 },
                 modifier = Modifier.padding(end = 8.dp)
             ) {
@@ -120,19 +121,16 @@ fun AddEditCategory(
             }
             Button(
                 onClick = {
-                    viewModel.onEvent(
-                        AddEditCategoryEvent.Save(
-                            name = name.text,
-                            isExpense = !isIncome
-                        )
-                    )
+                    viewModel.onEvent(AddEditCategoryEvent.Save)
                     navController.navigate(Screen.Categories.route)
                 }
             ) {
-                // TODO
-                // somehow find out if its add or edit
-                // also fill in default values for edit
-                Text(text = stringResource(R.string.add))
+                // TODO this doesnt detect difference between add/edit
+                if (viewModel.currentId == 0) {
+                    Text(text = stringResource(R.string.add))
+                } else {
+                    Text(text = stringResource(R.string.edit))
+                }
             }
         }
     }

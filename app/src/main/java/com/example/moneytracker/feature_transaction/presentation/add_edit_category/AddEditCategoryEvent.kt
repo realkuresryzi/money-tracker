@@ -2,5 +2,5 @@ package com.example.moneytracker.feature_transaction.presentation.add_edit_categ
 
 sealed class AddEditCategoryEvent {
     data class EnteredName(val value: String) : AddEditCategoryEvent()
-    data class Save(val name: String, val isExpense: Boolean) : AddEditCategoryEvent()
+    data object Save : AddEditCategoryEvent()
 }
