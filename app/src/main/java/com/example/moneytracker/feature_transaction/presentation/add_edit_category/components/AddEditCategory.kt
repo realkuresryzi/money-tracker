@@ -92,7 +92,7 @@ fun AddEditCategory(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
-                checked = false,
+                checked = isIncome,
                 onCheckedChange = { isChecked ->
                     isIncome = isChecked
                 }
