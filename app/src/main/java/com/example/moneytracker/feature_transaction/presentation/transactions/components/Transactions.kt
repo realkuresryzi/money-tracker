@@ -21,14 +21,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,6 +49,8 @@ import com.example.moneytracker.feature_transaction.presentation.shared.text.Hea
 import com.example.moneytracker.feature_transaction.presentation.transactions.TransactionsEvent
 import com.example.moneytracker.feature_transaction.presentation.transactions.TransactionsViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun Transactions(
@@ -58,6 +63,9 @@ fun Transactions(
 
     val undoString = stringResource(R.string.undo)
     val deletedString = stringResource(R.string.transaction_deleted)
+
+    val dayOnlyFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+    var prevDate = ""
 
     Scaffold(
         snackbarHost = {
@@ -132,6 +140,26 @@ fun Transactions(
                 contentPadding = PaddingValues(bottom = 60.dp)
             ) {
                 items(state.transactions) { transaction ->
+                    val curr = LocalDate.parse(transaction.date, dayOnlyFormatter).toString()
+                    if (prevDate != curr) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                        ) {
+                            Text(
+                                text = curr,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.padding(end = 16.dp)
+                            )
+                            Divider(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier
+                                    .height(1.dp)
+                                    .weight(1f)
+                            )
+                        }
+                    }
+                    prevDate = curr
                     TransactionItem(
                         item = transaction,
                         modifier = Modifier
@@ -154,7 +182,7 @@ fun Transactions(
                             }
                         }
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
             BottomBar(

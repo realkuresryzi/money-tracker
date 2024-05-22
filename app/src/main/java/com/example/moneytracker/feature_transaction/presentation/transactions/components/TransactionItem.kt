@@ -49,11 +49,11 @@ fun TransactionItem(
                 maxLines = 1,
                 style = MaterialTheme.typography.bodyLarge,
             )
-            Text(
-                text = item.date,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 4.dp)
-            )
+//            Text(
+//                text = item.date,
+//                style = MaterialTheme.typography.bodySmall,
+//                modifier = Modifier.padding(top = 4.dp)
+//            )
         }
 
         Spacer(Modifier.weight(1f))
