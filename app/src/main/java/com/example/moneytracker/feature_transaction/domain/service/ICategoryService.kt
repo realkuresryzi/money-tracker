@@ -7,5 +7,5 @@ interface ICategoryService {
     fun getCategories(isExpenseFilter: Boolean? = null): Flow<List<CategoryViewModel>>
     suspend fun getCategory(id: Int): CategoryViewModel
     suspend fun insertCategory(category: CategoryViewModel)
-    suspend fun deleteCategory(category: CategoryViewModel)
+    suspend fun deleteCategory(category: CategoryViewModel): String
 }

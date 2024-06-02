@@ -96,14 +96,11 @@ fun AddEditCategory(
                 checked = isIncome,
                 onCheckedChange = { isChecked ->
                     isIncome = isChecked
+                    //viewModel.onEvent(AddEditCategoryEvent.EnteredIsExpense(isIncome))
                 }
             )
             Text(text = stringResource(R.string.is_income_category))
         }
-
-        // TODO add resource string for color
-        //Label(text = "Color")
-        // TODO color picker
 
         Spacer(modifier = Modifier.height(15.dp))
 
@@ -125,7 +122,6 @@ fun AddEditCategory(
                     navController.navigate(Screen.Categories.route)
                 }
             ) {
-                // TODO this doesnt detect difference between add/edit
                 if (viewModel.currentId == 0) {
                     Text(text = stringResource(R.string.add))
                 } else {

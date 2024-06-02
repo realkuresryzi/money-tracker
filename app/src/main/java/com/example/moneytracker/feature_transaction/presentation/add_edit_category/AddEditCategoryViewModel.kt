@@ -27,8 +27,8 @@ class AddEditCategoryViewModel @Inject constructor(
     private val _name = mutableStateOf(InputFieldState())
     val name: State<InputFieldState> = _name
 
-//    private val _isIncome = mutableStateOf<CategoryViewModel?>(null)
-//    val isIncome: State<CategoryViewModel?> = _isIncome
+    private val _isIncome = mutableStateOf<CategoryViewModel?>(null)
+    val isIncome: State<CategoryViewModel?> = _isIncome
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -59,13 +59,17 @@ class AddEditCategoryViewModel @Inject constructor(
                 )
             }
 
+            is AddEditCategoryEvent.EnteredIsExpense -> {
+                //_isIncome.value = isIncome.value
+            }
+
             is AddEditCategoryEvent.Save -> {
                 viewModelScope.launch {
                     categoryService.insertCategory(
                         CategoryViewModel(
                             name = name.value.text,
                             color = Color.Gray,
-                            isExpense = false,
+                            isExpense = isIncome.value?.isExpense == true,
                             iconResourceId = R.drawable.blur_radial,
                             id = currentId
                         )

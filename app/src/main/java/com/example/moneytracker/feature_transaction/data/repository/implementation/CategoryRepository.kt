@@ -2,6 +2,7 @@ package com.example.moneytracker.feature_transaction.data.repository.implementat
 
 import com.example.moneytracker.feature_transaction.data.dao.CategoryDao
 import com.example.moneytracker.feature_transaction.data.entity.Category
+import com.example.moneytracker.feature_transaction.data.entity.Transaction
 import com.example.moneytracker.feature_transaction.data.repository.EntityNotFoundException
 import com.example.moneytracker.feature_transaction.data.repository.ICategoryRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,10 @@ class CategoryRepository(
 ) : ICategoryRepository {
     override fun getCategories(isExpenseFilter: Boolean?): Flow<List<Category>> {
         return dao.getCategories(isExpenseFilter)
+    }
+
+    override fun getTransactions(): Flow<List<Transaction>> {
+        return dao.getTransactions()
     }
 
     @Throws(EntityNotFoundException::class)

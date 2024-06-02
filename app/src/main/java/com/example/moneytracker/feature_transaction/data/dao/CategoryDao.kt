@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.moneytracker.feature_transaction.data.entity.Category
+import com.example.moneytracker.feature_transaction.data.entity.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,6 +18,13 @@ interface CategoryDao {
         """
     )
     fun getCategories(isExpenseFilter: Boolean? = null): Flow<List<Category>>
+
+    @Query(
+        """
+            select * from `transaction`
+        """
+    )
+    fun getTransactions(): Flow<List<Transaction>>
 
     @Query("select * from `category` where id = :id")
     suspend fun getCategoryById(id: Int): Category?

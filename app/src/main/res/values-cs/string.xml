@@ -5,13 +5,15 @@
     <string name="expense">Výdaje</string>
     <string name="income">Příjmy</string>
     <string name="transaction_deleted">Transakce odstraněna</string>
+    <string name="category_deleted">Kategorie odstraněna</string>
+    <string name="cannot_delete">Nelze odstranit, kategorie obsahuje transakce</string>
     <string name="undo">Zpět</string>
     <string name="save">Uložit</string>
     <string name="add">Přidat</string>
     <string name="clear">Vymazat</string>
     <string name="edit">Upravit</string>
     <string name="delete">Smazat</string>
-    <string name="click_a_category">Klikněte na kategorii a upravte ji…</string>
+    <string name="click_a_category">Klikněte na kategorii pro její smazání…</string>
     <string name="select_image">Vybrat obrázek</string>
     <string name="required_field">Pole je povinné</string>
     <string name="invalid_format">Neplatný formát</string>

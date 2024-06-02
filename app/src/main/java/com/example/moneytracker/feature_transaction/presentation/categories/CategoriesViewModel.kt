@@ -49,6 +49,7 @@ class CategoriesViewModel @Inject constructor(
     private var currentId: Int? = null
     private var getIncomeCategoriesJob: Job? = null
     private var getExpenseCategoriesJob: Job? = null
+    private var recentlyDeleted: CategoryViewModel? = null
 
     init {
         savedStateHandle.get<Int>("id")?.let { id ->
@@ -72,6 +73,25 @@ class CategoriesViewModel @Inject constructor(
         }
         getIncomeCategories()
         getExpenseCategories()
+    }
+
+    fun onEvent(event: CategoriesEvent, callback: (String) -> Unit) {
+        when (event) {
+            is CategoriesEvent.Delete -> {
+                viewModelScope.launch {
+                    val result = categoryService.deleteCategory(event.category)
+                    recentlyDeleted = event.category
+                    callback(result)
+                }
+            }
+
+            is CategoriesEvent.Restore -> {
+                viewModelScope.launch {
+                    categoryService.insertCategory(recentlyDeleted ?: return@launch)
+                    recentlyDeleted = null
+                }
+            }
+        }
     }
 
     private fun getIncomeCategories() {
