@@ -1,6 +1,5 @@
 package com.example.moneytracker.feature_transaction.presentation.statistics
 
-import androidx.compose.runtime.sourceInformation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moneytracker.feature_transaction.data.entity.Category
@@ -9,7 +8,6 @@ import com.example.moneytracker.feature_transaction.domain.service.ITransactionS
 import com.example.moneytracker.feature_transaction.domain.util.OrderType
 import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -24,13 +22,11 @@ class StatisticsViewModel @Inject constructor(
 
     val balanceInfo = BalanceInfo(55.0, 4.0)
     val totalForCategoriesForMonth =
-        listOf(
+        mutableListOf(
             TotalForCategoryForMonth(Category(1, "Food", 1, true, 1), 100),
             TotalForCategoryForMonth(Category(2, "Transport", 1, true, 1), 200),
             TotalForCategoryForMonth(Category(3, "Entertainment", 1, true, 1), 300),
             TotalForCategoryForMonth(Category(4, "Health", 1, true, 1), 400),
-            TotalForCategoryForMonth(Category(5, "Other", 1, true, 1), 500)
-
         )
 
     var state: StatisticsState
@@ -38,14 +34,21 @@ class StatisticsViewModel @Inject constructor(
     init {
         val currentDateTime = LocalDateTime.now()
         var balanceInfo = balanceInfo
+        var stateTotalForCategoryForMonth = totalForCategoriesForMonth
         state = StatisticsState(
             balanceInfo,
-            totalForCategoriesForMonth,
+            stateTotalForCategoryForMonth,
             currentDateTime
         )
-        println("Fetching data")
         fetchExpenses()
         fetchIncomes()
+        updateTotalForCategoriesForMonth()
+
+    }
+
+    fun updateTotalForCategoriesForMonth() {
+        state.totalForCategoriesForMonth.clear()
+        state.totalForCategoriesForMonth.add(TotalForCategoryForMonth(Category(5, "New Category", 1, true, 1), 500))
 
     }
 
@@ -63,11 +66,8 @@ class StatisticsViewModel @Inject constructor(
 
                 transactionsIncome.collect {
                     it.forEach {
-                        println("Transaction: $it")
                         incomes += it.amount
-                        println(incomes)
                         state.balance.income = incomes
-
                     }
 
                 }
@@ -92,11 +92,8 @@ class StatisticsViewModel @Inject constructor(
 
                  transactionsExpense.collect{
                      it.forEach {
-                         println("Transaction: $it")
                          expenses += it.amount
-                         println(expenses)
                          state.balance.expense = expenses
-
                      }
 
                  }
@@ -106,5 +103,34 @@ class StatisticsViewModel @Inject constructor(
                  println("Error fetching data: ${e.message}")
              }
          }
+    }
+
+    fun fetchCategoriesOfExpenses() {
+        viewModelScope.launch {
+            try {
+                val categories = categoryService.getCategories(true)
+
+                var totalForCategoryForMonthList = mutableListOf<TotalForCategoryForMonth>()
+
+                categories.collect{ cat ->
+
+                    cat.forEach { categoryViewModel ->
+                        println("Category: $categoryViewModel")
+                        totalForCategoryForMonthList.add(TotalForCategoryForMonth(Category(categoryViewModel.id, categoryViewModel.name, 1, categoryViewModel.isExpense, categoryViewModel.iconResourceId), 2))
+
+
+                    }
+                    println("List is ")
+                    println(totalForCategoryForMonthList)
+
+                }
+
+                println("Total for categories")
+                println(state.totalForCategoriesForMonth)
+            } catch (e: Exception) {
+                // Handle any exceptions that might occur during the database call
+                println("Error fetching data: ${e.message}")
+            }
+        }
     }
 }

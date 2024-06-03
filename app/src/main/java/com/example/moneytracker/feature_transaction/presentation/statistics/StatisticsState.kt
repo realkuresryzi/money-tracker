@@ -4,6 +4,6 @@ import java.time.LocalDateTime
 
 data class StatisticsState(
     var balance: BalanceInfo,
-    val totalForCategoriesForMonth: Collection<TotalForCategoryForMonth> = emptyList<TotalForCategoryForMonth>(),
+    var totalForCategoriesForMonth: MutableList<TotalForCategoryForMonth>,
     val currentDateTime: LocalDateTime,
 )
