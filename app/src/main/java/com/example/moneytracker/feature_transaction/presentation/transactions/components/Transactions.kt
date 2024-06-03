@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -80,16 +79,18 @@ fun Transactions(
                 onClick = {
                     navController.navigate(Screen.AddEditTransaction.route + "?id=0")
                 },
-                Modifier
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier
                     .background(Color.Transparent)
-                    .padding(bottom = 95.dp)
+                    .padding(bottom = 65.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(R.string.add)
                 )
             }
-        },
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier

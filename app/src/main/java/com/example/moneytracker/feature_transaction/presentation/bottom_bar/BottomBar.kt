@@ -6,26 +6,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.moneytracker.feature_transaction.presentation.navigation.Screen
-import com.example.moneytracker.ui.theme.OffWhite
 
 @Composable
 fun BottomBar(
     navController: NavController,
-    modifier: Modifier,
-    color: Color = OffWhite
+    modifier: Modifier
 ) {
-    Column(modifier = modifier.background(color = color)) {
+    Column(modifier = modifier.background(color = MaterialTheme.colorScheme.secondaryContainer)) {
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(8.dp)
         ) {
             BottomBarItem(
                 item = BottomBarItem.Items,

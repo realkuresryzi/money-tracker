@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -63,9 +64,11 @@ fun Categories(
                 onClick = {
                     navController.navigate(Screen.AddEditCategory.route)
                 },
-                Modifier
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier
                     .background(Color.Transparent)
-                    .padding(bottom = 95.dp)
+                    .padding(bottom = 65.dp)
             ) {
                 Icon(painterResource(id = R.drawable.plus), contentDescription = "Add")
             }
@@ -110,7 +113,7 @@ fun Categories(
                                         duration = SnackbarDuration.Short
                                     )
                                     if (result == SnackbarResult.ActionPerformed) {
-                                        viewModel.onEvent(CategoriesEvent.Restore){}
+                                        viewModel.onEvent(CategoriesEvent.Restore) {}
                                     }
                                 }
                             }
@@ -139,7 +142,7 @@ fun Categories(
                                         duration = SnackbarDuration.Short
                                     )
                                     if (result == SnackbarResult.ActionPerformed) {
-                                        viewModel.onEvent(CategoriesEvent.Restore){}
+                                        viewModel.onEvent(CategoriesEvent.Restore) {}
                                     }
                                 }
                             }

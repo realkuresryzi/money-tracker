@@ -1,6 +1,8 @@
 package com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.components
 
 import ImageUploader
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,6 +41,7 @@ import com.example.moneytracker.feature_transaction.presentation.shared.text.Lab
 import kotlinx.coroutines.flow.collectLatest
 import loadImage
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AddEditTransaction(
     navController: NavController,
@@ -50,18 +54,9 @@ fun AddEditTransaction(
     val incomeCategories = viewModel.incomeCategories.value
     val expenseCategories = viewModel.expenseCategories.value
 
-//    val scaffoldState = rememberBottomSheetScaffoldState()
-//    val scope = rememberCoroutineScope()
-
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-//                is AddEditTransactionViewModel.UiEvent.ShowSnackbar -> {
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = event.message
-//                    )
-//                }
-
                 is AddEditTransactionViewModel.UiEvent.SaveTransaction -> {
                     navController.navigateUp()
                 }
@@ -73,7 +68,9 @@ fun AddEditTransaction(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { viewModel.onEvent(AddEditTransactionEvent.Save) },
-                Modifier.background(Color.Transparent)
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier.background(Color.Transparent)
             ) {
                 Icon(
                     imageVector = Icons.Default.Done,
@@ -167,39 +164,6 @@ fun AddEditTransaction(
                     }
                 }
             }
-//            Spacer(modifier = Modifier.height(15.dp))
-            /*
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End,
-                        ) {
-                            Button(
-                                onClick = {
-                                    selectedCategoryModel = null
-                                    amount = ""
-                                    description = ""
-                                    imageUri = null
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            ) {
-                                Text(text = "Clear")
-                            }
-                            Button(
-                                enabled = amount.text.isNotBlank()
-                                        && (amount.text.toDoubleOrNull() ?: 0.0) > 0.0
-                                        && selectedCategory != null
-                                        && title.text.isNotBlank(),
-                                onClick = {
-                                    selectedCategoryModel = null
-                                    amount = ""
-                                    description = ""
-                                    imageUri = null
-                                }
-                            ) {
-                                Text(text = "Add")
-                            }
-                        }
-            */
         }
     }
 }

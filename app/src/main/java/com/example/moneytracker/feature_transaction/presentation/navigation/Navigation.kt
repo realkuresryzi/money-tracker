@@ -14,6 +14,7 @@ import com.example.moneytracker.feature_transaction.presentation.categories.comp
 import com.example.moneytracker.feature_transaction.presentation.statistics.components.Statistics
 import com.example.moneytracker.feature_transaction.presentation.transactions.components.Transactions
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun Navigation() {
     val navController = rememberNavController()

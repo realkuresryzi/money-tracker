@@ -49,11 +49,6 @@ fun TransactionItem(
                 maxLines = 1,
                 style = MaterialTheme.typography.bodyLarge,
             )
-//            Text(
-//                text = item.date,
-//                style = MaterialTheme.typography.bodySmall,
-//                modifier = Modifier.padding(top = 4.dp)
-//            )
         }
 
         Spacer(Modifier.weight(1f))
@@ -63,7 +58,6 @@ fun TransactionItem(
         formattedAmount += " €"
         Text(
             text = if (item.category.isExpense) formattedAmount else "+$formattedAmount",
-//            color = if (item.category.isExpense) Color.Red else Color.Green,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
