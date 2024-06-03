@@ -47,8 +47,35 @@ class StatisticsViewModel @Inject constructor(
     }
 
     fun updateTotalForCategoriesForMonth() {
-        state.totalForCategoriesForMonth.clear()
-        state.totalForCategoriesForMonth.add(TotalForCategoryForMonth(Category(5, "New Category", 1, true, 1), 500))
+        viewModelScope.launch {
+            var expenseTransactions = transactionService.getTransactions(
+                true,
+                null,
+                TransactionOrder.DATE,
+                OrderType.DESC)
+            val map = mutableMapOf<String, Double>()
+
+            expenseTransactions.collect{
+                it.forEach {
+                    if (map.containsKey(it.category.name)) {
+                        map[it.category.name] = map[it.category.name]!! + it.amount
+                    } else {
+                        map[it.category.name] = it.amount
+                    }
+                }
+                println("Map is ")
+                println(map)
+                state.totalForCategoriesForMonth.clear()
+                for (entry in map.entries) {
+                    state.totalForCategoriesForMonth.add(TotalForCategoryForMonth(Category(1, entry.key, 1, true, 1), entry.value.toInt()))
+                }
+            }
+
+
+
+        }
+
+
 
     }
 
