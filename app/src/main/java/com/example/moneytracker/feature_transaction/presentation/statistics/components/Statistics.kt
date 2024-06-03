@@ -122,15 +122,15 @@ fun StatisticsBarGraph(balanceInfo: BalanceInfo) {
                     // TODO use some text composable from shared folder to have unified style
                     // or create your own text composable if current ones are not sufficient (use MaterialTheme.typography for style)
                     Text(text = stringResource(R.string.expense), fontSize = 15.sp)
-                    Text(text = balanceInfo.expense.toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.expense.toString(), fontSize = 20.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = stringResource(R.string.income), fontSize = 15.sp)
-                    Text(text = balanceInfo.income.toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.income.toString(), fontSize = 20.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = stringResource(R.string.balance), fontSize = 15.sp)
-                    Text(text = balanceInfo.getBalance().toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.getBalance().toString(), fontSize = 20.sp)
                 }
             }
         }
