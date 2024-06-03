@@ -121,7 +121,7 @@ fun AddEditTransaction(
             Spacer(modifier = Modifier.height(15.dp))
 
             CustomInputField(
-                value = title.text,
+                value = title,
                 onValueChange = { viewModel.onEvent(AddEditTransactionEvent.EnteredTitle(it)) },
                 label = stringResource(R.string.title),
                 placeholder = stringResource(R.string.title_input_placeholder),
@@ -130,7 +130,7 @@ fun AddEditTransaction(
             Spacer(modifier = Modifier.height(15.dp))
 
             NumericInputField(
-                value = amount.text,
+                value = amount,
                 onValueChange = { viewModel.onEvent(AddEditTransactionEvent.EnteredAmount(it)) },
                 label = stringResource(R.string.amount),
                 placeholder = stringResource(R.string.amount_input_placeholder),

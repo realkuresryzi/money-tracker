@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -26,11 +27,11 @@ fun NumericInputField(
     modifier: Modifier = Modifier,
 ) {
     var errorMessage by remember { mutableStateOf("") }
-
+    var hasBeenFocused by remember { mutableStateOf(false) }
 
     errorMessage = when {
-        value.isBlank() -> stringResource(R.string.required_field)
-        value.toDoubleOrNull() == null -> stringResource(R.string.invalid_format)
+        hasBeenFocused && value.isBlank() -> stringResource(R.string.required_field)
+        hasBeenFocused && value.toDoubleOrNull() == null -> stringResource(R.string.invalid_format)
         else -> ""
     }
 
@@ -46,6 +47,11 @@ fun NumericInputField(
         ),
         modifier = modifier
             .fillMaxWidth()
+            .onFocusChanged { focusState ->
+                if (focusState.isFocused) {
+                    hasBeenFocused = true
+                }
+            }
     )
     if (errorMessage.isNotEmpty()) {
         ErrorMessage(errorMessage = errorMessage, modifier = modifier.padding(top = 10.dp))

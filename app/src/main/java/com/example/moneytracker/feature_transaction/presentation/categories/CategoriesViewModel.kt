@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moneytracker.feature_transaction.domain.model.CategoryViewModel
 import com.example.moneytracker.feature_transaction.domain.service.ICategoryService
-import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.InputFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,11 +21,11 @@ class CategoriesViewModel @Inject constructor(
     private val categoryService: ICategoryService,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _name = mutableStateOf(InputFieldState())
-    val name: State<InputFieldState> = _name
+    private val _name = mutableStateOf("")
+    val name: State<String> = _name
 
-    private val _iconId = mutableStateOf(InputFieldState())
-    val iconId: State<InputFieldState> = _iconId
+    private val _iconId = mutableStateOf("")
+    val iconId: State<String> = _iconId
 
     private val _category = mutableStateOf<CategoryViewModel?>(null)
     val category: State<CategoryViewModel?> = _category
@@ -57,14 +56,8 @@ class CategoriesViewModel @Inject constructor(
                 viewModelScope.launch {
                     categoryService.getCategory(id).also { category ->
                         currentId = category.id
-                        _name.value = name.value.copy(
-                            text = category.name,
-                            isHintVisible = false
-                        )
-                        _iconId.value = iconId.value.copy(
-                            text = category.iconResourceId.toString(),
-                            isHintVisible = false
-                        )
+                        _name.value = category.name
+                        _iconId.value = category.iconResourceId.toString()
                         _color.value = color.value
                         _isExpense.value = isExpense.value
                     }

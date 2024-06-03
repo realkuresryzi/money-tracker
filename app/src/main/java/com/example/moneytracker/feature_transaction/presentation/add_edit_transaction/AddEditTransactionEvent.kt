@@ -5,9 +5,7 @@ import com.example.moneytracker.feature_transaction.domain.model.CategoryViewMod
 
 sealed class AddEditTransactionEvent {
     data class EnteredTitle(val value: String) : AddEditTransactionEvent()
-    data class ShowTitleErrorMessage(val message: String) : AddEditTransactionEvent()
     data class EnteredAmount(val value: String) : AddEditTransactionEvent()
-    data class ShowAmountErrorMessage(val message: String) : AddEditTransactionEvent()
     data class SelectCategory(val category: CategoryViewModel?) : AddEditTransactionEvent()
     data class UploadImage(val uri: Uri?) : AddEditTransactionEvent()
     data object Save : AddEditTransactionEvent()

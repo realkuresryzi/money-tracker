@@ -42,7 +42,16 @@ class TransactionService(
     }
 
     override suspend fun insertTransaction(transaction: TransactionViewModel) {
-        repository.insertTransaction(modelToEntityMapper.map(transaction))
+        val adjustedAmount =
+            if ((transaction.category.isExpense && transaction.amount > 0)
+                || (!transaction.category.isExpense && transaction.amount < 0)
+            ) {
+                -transaction.amount
+            } else {
+                transaction.amount
+            }
+        val validatedAmountTransaction = transaction.copy(amount = adjustedAmount)
+        repository.insertTransaction(modelToEntityMapper.map(validatedAmountTransaction))
     }
 
     override suspend fun deleteTransaction(transaction: TransactionViewModel) {

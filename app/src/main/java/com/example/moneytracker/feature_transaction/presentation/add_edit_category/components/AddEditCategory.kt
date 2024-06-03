@@ -15,12 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,14 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.moneytracker.R
 import com.example.moneytracker.feature_transaction.presentation.add_edit_category.AddEditCategoryEvent
 import com.example.moneytracker.feature_transaction.presentation.add_edit_category.AddEditCategoryViewModel
-import com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.InputFieldState
 import com.example.moneytracker.feature_transaction.presentation.navigation.Screen
 import com.example.moneytracker.feature_transaction.presentation.shared.input.CustomInputField
 import com.example.moneytracker.feature_transaction.presentation.shared.text.Headline
@@ -46,7 +39,7 @@ fun AddEditCategory(
     navController: NavController,
     viewModel: AddEditCategoryViewModel = hiltViewModel()
 ) {
-    var name = viewModel.name.value
+    val name = viewModel.name.value
     var isIncome = false //viewModel.isIncome.value
 
     Column(
@@ -58,7 +51,7 @@ fun AddEditCategory(
         Spacer(modifier = Modifier.height(15.dp))
 
         CustomInputField(
-            value = name.text,
+            value = name,
             onValueChange = { viewModel.onEvent(AddEditCategoryEvent.EnteredName(it)) },
             label = stringResource(R.string.name),
             placeholder = stringResource(R.string.name_input_placeholder),
