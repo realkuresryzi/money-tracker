@@ -11,6 +11,8 @@ import com.example.moneytracker.feature_transaction.domain.util.OrderType
 import com.example.moneytracker.feature_transaction.domain.util.TransactionOrder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class TransactionService(
     private val repository: ITransactionRepository,
@@ -50,7 +52,10 @@ class TransactionService(
             } else {
                 transaction.amount
             }
-        val validatedAmountTransaction = transaction.copy(amount = adjustedAmount)
+        val roundedAmount = BigDecimal(adjustedAmount)
+            .setScale(2, RoundingMode.HALF_EVEN)
+            .toDouble()
+        val validatedAmountTransaction = transaction.copy(amount = roundedAmount)
         repository.insertTransaction(modelToEntityMapper.map(validatedAmountTransaction))
     }
 

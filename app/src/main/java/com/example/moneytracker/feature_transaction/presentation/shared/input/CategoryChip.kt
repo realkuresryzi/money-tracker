@@ -34,6 +34,19 @@ fun CategoryChip(
     onCategorySelected: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val onSelectedModifier = if (isSelected) Modifier
+        .border(
+            width = 2.dp,
+            color = categoryViewModel.color,
+            shape = CircleShape
+        )
+        .border(
+            width = 4.dp,
+            color = MaterialTheme.colorScheme.background,
+            shape = CircleShape
+        )
+    else Modifier
+
     Box(
         modifier = modifier
             .size(80.dp)
@@ -47,18 +60,8 @@ fun CategoryChip(
                 .clickable { onCategorySelected() }
         ) {
             Box(
-                modifier = Modifier
-                    .border(
-                        width = if (isSelected) 2.dp else 0.dp,
-                        color = categoryViewModel.color,
-                        shape = CircleShape
-                    )
-                    .border(
-                        width = if (isSelected) 4.dp else 0.dp,
-                        color = MaterialTheme.colorScheme.background,
-                        shape = CircleShape
-                    )
-                    .size(56.dp)
+                modifier = onSelectedModifier
+                    .size(60.dp)
                     .clip(CircleShape)
                     .background(categoryViewModel.color)
                     .padding(8.dp)
@@ -67,7 +70,7 @@ fun CategoryChip(
                     imageVector = ImageVector.vectorResource(categoryViewModel.iconResourceId),
                     contentDescription = stringResource(R.string.category),
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(44.dp)
                         .padding(4.dp),
                     tint = MaterialTheme.colorScheme.background
                 )

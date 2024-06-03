@@ -1,8 +1,6 @@
 package com.example.moneytracker.feature_transaction.presentation.add_edit_transaction.components
 
-import ImageUploader
-import android.os.Build
-import androidx.annotation.RequiresApi
+import com.example.moneytracker.feature_transaction.presentation.shared.input.ImageUploader
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -39,9 +37,8 @@ import com.example.moneytracker.feature_transaction.presentation.shared.input.Cu
 import com.example.moneytracker.feature_transaction.presentation.shared.input.NumericInputField
 import com.example.moneytracker.feature_transaction.presentation.shared.text.Label
 import kotlinx.coroutines.flow.collectLatest
-import loadImage
+import com.example.moneytracker.feature_transaction.presentation.shared.input.loadImage
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AddEditTransaction(
     navController: NavController,

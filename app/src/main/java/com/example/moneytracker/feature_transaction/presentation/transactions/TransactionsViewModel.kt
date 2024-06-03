@@ -15,6 +15,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -94,15 +96,20 @@ class TransactionsViewModel @Inject constructor(
             order = transactionOrder
         )
             .onEach { transactions ->
+                val balance = transactions
+                    .map { it.amount }
+                    .reduceOrNull { acc, amount -> acc + amount } ?: 0.0
+                val roundedBalance = BigDecimal(balance)
+                    .setScale(2, RoundingMode.HALF_EVEN)
+                    .toDouble()
+
                 _state.value = state.value.copy(
                     transactions = transactions,
                     isExpenseFilter = isExpenseFilter,
                     categoryFilter = categoryFilter,
                     orderType = orderType,
                     transactionOrder = transactionOrder,
-                    balance = transactions
-                        .map { it.amount }
-                        .reduceOrNull { acc, amount -> acc + amount } ?: 0.0
+                    balance = roundedBalance
                 )
             }
             .launchIn(viewModelScope)

@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import loadImage
+import com.example.moneytracker.feature_transaction.presentation.shared.input.loadImage
 
 @Composable
 fun ImageContainer(imageUri: Uri?, modifier: Modifier = Modifier) {

@@ -1,3 +1,5 @@
+package com.example.moneytracker.feature_transaction.presentation.shared.input
+
 import android.Manifest
 import android.app.Activity
 import android.graphics.BitmapFactory
@@ -6,7 +8,6 @@ import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import com.example.moneytracker.R
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -55,7 +55,9 @@ fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier)
             confirmButton = {
                 TextButton(onClick = {
                     showRationale.value = false
-                    permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+                    }
                 }) {
                     Text("OK")
                 }
@@ -69,6 +71,10 @@ fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier)
     }
     Button(
         onClick = {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                imagePickerLauncher.launch("image/*")
+                return@Button
+            }
             if (activity != null && ActivityCompat.shouldShowRequestPermissionRationale(
                     activity,
                     Manifest.permission.READ_MEDIA_IMAGES
@@ -77,6 +83,7 @@ fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier)
                 showRationale.value = true
             } else {
                 permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+
             }
         },
         colors = ButtonDefaults.buttonColors(
