@@ -36,6 +36,7 @@ import com.example.moneytracker.feature_transaction.presentation.util.getNominat
 import com.example.moneytracker.ui.theme.Purple40
 import com.jaikeerthick.composable_graphs.composables.pie.PieChart
 import com.jaikeerthick.composable_graphs.composables.pie.model.PieData
+import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartColors
 import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartStyle
 import com.jaikeerthick.composable_graphs.composables.pie.style.PieChartVisibility
 import java.time.format.DateTimeFormatter
@@ -122,15 +123,15 @@ fun StatisticsBarGraph(balanceInfo: BalanceInfo) {
                     // TODO use some text composable from shared folder to have unified style
                     // or create your own text composable if current ones are not sufficient (use MaterialTheme.typography for style)
                     Text(text = stringResource(R.string.expense), fontSize = 15.sp)
-                    Text(text = balanceInfo.expense.toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.expense.toString(), fontSize = 20.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = stringResource(R.string.income), fontSize = 15.sp)
-                    Text(text = balanceInfo.income.toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.income.toString(), fontSize = 20.sp)
                 }
                 Column(Modifier.padding(20.dp)) {
                     Text(text = stringResource(R.string.balance), fontSize = 15.sp)
-                    Text(text = balanceInfo.getBalance().toString(), fontSize = 25.sp)
+                    Text(text = balanceInfo.getBalance().toString(), fontSize = 20.sp)
                 }
             }
         }
@@ -155,13 +156,15 @@ fun StatisticsPieChart(expensesByCategoryData: Collection<TotalForCategoryForMon
         PieChart(
             modifier = Modifier
                 .padding(vertical = 20.dp)
-                .size(300.dp),
+                .size(500.dp),
             data = pieChartData,
             style = PieChartStyle(
                 visibility = PieChartVisibility(
                     isLabelVisible = true,
-                    isPercentageVisible = true
-                )
+                    isPercentageVisible = true,
+                ),
+                percentageSize = 20.sp,
+                labelSize = 15.sp,
             ),
             onSliceClick = { pieData ->
                 Toast.makeText(aContext, "${pieData.label}", Toast.LENGTH_SHORT).show()
