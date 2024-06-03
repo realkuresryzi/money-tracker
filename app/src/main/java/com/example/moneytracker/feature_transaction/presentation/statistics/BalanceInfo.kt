@@ -5,6 +5,6 @@ class BalanceInfo(
     var expense: Double,
 ){
     fun getBalance(): Double {
-        return income - expense
+        return income + expense
     }
 }
