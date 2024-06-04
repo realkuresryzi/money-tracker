@@ -35,4 +35,9 @@
     <string name="amount_input_placeholder">Zadejte částku</string>
     <string name="name_input_placeholder">Zadejte název</string>
     <string name="is_income_category">Jedná se o příjmovou kategorii?</string>
+    <string name="permission_required">Vyžaduje se povolení</string>
+    <string name="access_images">K výběru obrázku potřebujeme povolení k přístupu k vašim mediálním souborům.</string>
+    <string name="ok_btn">OK</string>
+    <string name="cancel_btn">Zrušit</string>
+    <string name="permission_denied">Povolení zamítnuto. Můžete to změnit v nastavení.</string>
 </resources>

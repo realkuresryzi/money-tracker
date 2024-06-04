@@ -41,7 +41,7 @@ fun TransactionItem(
             modifier = Modifier.padding(end = 10.dp)
         )
         Column(
-            modifier = Modifier.width(200.dp)
+            modifier = Modifier.width(150.dp)
         ) {
             Text(
                 text = item.title,
@@ -63,7 +63,6 @@ fun TransactionItem(
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.End,
             modifier = Modifier
-                .padding(horizontal = 10.dp)
                 .width(80.dp)
         )
         IconButton(

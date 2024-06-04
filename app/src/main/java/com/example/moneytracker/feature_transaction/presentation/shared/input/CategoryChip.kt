@@ -40,11 +40,6 @@ fun CategoryChip(
             color = categoryViewModel.color,
             shape = CircleShape
         )
-        .border(
-            width = 4.dp,
-            color = MaterialTheme.colorScheme.background,
-            shape = CircleShape
-        )
     else Modifier
 
     Box(
@@ -61,6 +56,11 @@ fun CategoryChip(
         ) {
             Box(
                 modifier = onSelectedModifier
+                    .border(
+                        width = 4.dp,
+                        color = MaterialTheme.colorScheme.background,
+                        shape = CircleShape
+                    )
                     .size(60.dp)
                     .clip(CircleShape)
                     .background(categoryViewModel.color)

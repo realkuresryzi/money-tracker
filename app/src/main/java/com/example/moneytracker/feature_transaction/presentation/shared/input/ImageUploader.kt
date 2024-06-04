@@ -42,7 +42,11 @@ fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier)
         if (isGranted) {
             imagePickerLauncher.launch("image/*")
         } else {
-            Toast.makeText(context, "Permission denied. Cannot pick an image.", Toast.LENGTH_SHORT)
+            Toast.makeText(
+                context,
+                context.getString(R.string.permission_denied),
+                Toast.LENGTH_SHORT
+            )
                 .show()
         }
     }
@@ -50,8 +54,8 @@ fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier)
     if (showRationale.value) {
         AlertDialog(
             onDismissRequest = { showRationale.value = false },
-            title = { Text("Permission Required") },
-            text = { Text("We need permission to access your media files to select an image.") },
+            title = { Text(stringResource(id = R.string.permission_required)) },
+            text = { Text(stringResource(id = R.string.access_images)) },
             confirmButton = {
                 TextButton(onClick = {
                     showRationale.value = false
@@ -59,12 +63,12 @@ fun ImageUploader(onImageSelected: (Uri) -> Unit, modifier: Modifier = Modifier)
                         permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
                     }
                 }) {
-                    Text("OK")
+                    Text(stringResource(id = R.string.ok_btn))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showRationale.value = false }) {
-                    Text("Cancel")
+                    Text(stringResource(id = R.string.cancel_btn))
                 }
             }
         )
